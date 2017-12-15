@@ -5,23 +5,25 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_my_dreams"
+            android:icon="@drawable/ic_menu_my_dreams"
+            android:title="My dreams" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_menu_search"
+            android:title="Search" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Settings" />
+        <item
+            android:id="@+id/nav_alarm_clock"
+            android:icon="@drawable/ic_menu_alarm_clock"
+            android:title="Alarm clock" />
     </group>
 
+    //TODO возмоно, нам это пригодится для меню
+<!--
     <item android:title="Communicate">
         <menu>
             <item
@@ -33,6 +35,6 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
         </menu>
-    </item>
+    </item>-->
 
 </menu>
