@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_alarm_clock) {
             fab = findViewById(R.id.fab);
             fab.hide();
+            fragmentClass = AlarmFragment.class;
 
         }
 

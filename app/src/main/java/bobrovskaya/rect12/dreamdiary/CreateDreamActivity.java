@@ -3,6 +3,7 @@ package bobrovskaya.rect12.dreamdiary;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Date;
 
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
@@ -88,10 +90,37 @@ public class CreateDreamActivity extends AppCompatActivity {
     }
 
 
+    public void buttonPr() {
+        MediaRecorder media = new MediaRecorder();
 
-//    private insertDream() {
-//
-//    }
+        //указываем источник звука
+        media.setAudioSource(MediaRecorder.AudioSource.MIC);
+
+        //указываем результирующий формат и сжатие звука
+        media.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+        media.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        //указываем путь к файлу, в который будут сохранены аудиоданные
+        String path = "";
+        media.setOutputFile(path);
+
+        try {
+            media.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        media.start();
+
+        //media.stop();
+
+        //media.pause();
+
+    }
+
+
+
+
 
 
 }
