@@ -27,12 +27,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/createDreamDataText"
+            android:id="@+id/createDreamNameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="date" />
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/createDreamDreamText"

@@ -103,11 +103,15 @@ public class MainActivity extends AppCompatActivity
             });
 
         } else if (id == R.id.nav_search) {
+            fab = findViewById(R.id.fab);
+            fab.hide();
 
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_alarm_clock) {
+            fab = findViewById(R.id.fab);
+            fab.hide();
 
         }
 
