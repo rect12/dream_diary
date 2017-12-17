@@ -24,6 +24,7 @@
         </activity>
         <activity
             android:name=".CreateDreamActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity">
 
@@ -35,7 +36,11 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/app_name"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
     </application>
 
