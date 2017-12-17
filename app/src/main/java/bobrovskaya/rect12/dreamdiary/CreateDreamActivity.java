@@ -150,7 +150,7 @@ public class CreateDreamActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-        
+
 
     private void startAudioRecording(){
         try {
@@ -176,7 +176,7 @@ public class CreateDreamActivity extends AppCompatActivity {
     private void initializeMediaRecord(){
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         mediaRecorder.setOutputFile(filePath);
     }

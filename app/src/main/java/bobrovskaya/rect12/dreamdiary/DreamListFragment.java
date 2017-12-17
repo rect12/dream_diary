@@ -5,12 +5,16 @@ import android.app.Fragment;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
@@ -23,6 +27,9 @@ import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 public class DreamListFragment extends Fragment {
 
     private DreamDbHelper dreamDbHelper;
+    private ArrayList<Dream> dreamList;
+    private CustomAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,11 +38,23 @@ public class DreamListFragment extends Fragment {
                 container,false);
 
         dreamDbHelper = new DreamDbHelper(getActivity());
-        displayDatabaseInfo(view);
+        //displayDatabaseInfo(view);
+        recyclerView = view.findViewById(R.id.dreamListRecyclerView);
+
+        dreamList = new ArrayList<>();
+        adapter = new CustomAdapter(getActivity(), dreamList);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+        getAllDreams();
+
         return view;
     }
 
-    private void displayDatabaseInfo(View view) {
+    private void getAllDreams() {
         SQLiteDatabase db = dreamDbHelper.getReadableDatabase();
         String[] projection = {
                 DreamsTable._ID,
@@ -54,22 +73,12 @@ public class DreamListFragment extends Fragment {
                 null,
                 null);
 
-        TextView displayTextView = view.findViewById(R.id.textView_12);
         try {
-            displayTextView.setText("Таблица содержит " + cursor.getCount() + " записей.\n\n");
-            //Log.d("MY_TAG", Integer.toString(cursor.getCount()));
-            displayTextView.append(DreamsTable._ID + " - " +
-                    DreamsTable.COLUMN_NAME + " - " +
-                    DreamsTable.COLUMN_DATE + " - " +
-                    DreamsTable.COLUMN_DESCRIPTION + " - " +
-                    DreamsTable.COLUMN_AUDIO_PATH + "\n");
-
             // Узнаем индекс каждого столбца
             int idColumnIndex = cursor.getColumnIndex(DreamsTable._ID);
             int nameColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_NAME);
-            int cityColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DATE);
-            int genderColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DESCRIPTION);
-            int ageColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_AUDIO_PATH);
+            int dateColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DATE);
+            int descriptionColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DESCRIPTION);
 
             Date time;
             // Проходим через все ряды
@@ -77,23 +86,17 @@ public class DreamListFragment extends Fragment {
                 // Используем индекс для получения строки или числа
                 int currentID = cursor.getInt(idColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
-                int currentCity = cursor.getInt(cityColumnIndex);
-                time = new Date(currentCity);
-                String currentGender = cursor.getString(genderColumnIndex);
-                String currentAge = cursor.getString(ageColumnIndex);
-                // Выводим значения каждого столбца
-                displayTextView.append(("\n" + currentID + " - " +
-                        currentName + " - " +
-                        time.toString() + " - " +
-                        currentGender + " - " +
-                        currentAge));
-
-                }
+                int currentDate = cursor.getInt(dateColumnIndex);
+                time = new Date(currentDate);
+                String currentDescription = cursor.getString(descriptionColumnIndex);
+                // Добавляем значения каждого столбца
+                dreamList.add(new Dream(currentName, time.toString(), currentDescription));
+            }
         } finally {
             // Всегда закрываем курсор после чтения
             cursor.close();
+            adapter.notifyDataSetChanged();
         }
-
 
     }
 
