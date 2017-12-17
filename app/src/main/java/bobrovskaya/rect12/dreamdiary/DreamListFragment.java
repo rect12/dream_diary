@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Date;
+
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 
@@ -69,18 +71,20 @@ public class DreamListFragment extends Fragment {
             int genderColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DESCRIPTION);
             int ageColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_AUDIO_PATH);
 
+            Date time;
             // Проходим через все ряды
             while (cursor.moveToNext()) {
                 // Используем индекс для получения строки или числа
                 int currentID = cursor.getInt(idColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
-                String currentCity = cursor.getString(cityColumnIndex);
-                int currentGender = cursor.getInt(genderColumnIndex);
-                int currentAge = cursor.getInt(ageColumnIndex);
+                int currentCity = cursor.getInt(cityColumnIndex);
+                time = new Date(currentCity);
+                String currentGender = cursor.getString(genderColumnIndex);
+                String currentAge = cursor.getString(ageColumnIndex);
                 // Выводим значения каждого столбца
                 displayTextView.append(("\n" + currentID + " - " +
                         currentName + " - " +
-                        currentCity + " - " +
+                        time.toString() + " - " +
                         currentGender + " - " +
                         currentAge));
 

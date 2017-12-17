@@ -42,12 +42,31 @@
             android:ems="10"
             android:inputType="textMultiLine" />
 
-        <ImageButton
-            android:id="@+id/createDreamMicrophoneButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@android:drawable/ic_btn_speak_now" />
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/createDreamMicrophoneButtonStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_btn_speak_now" />
+
+            <ImageButton
+                android:id="@+id/createDreamMicrophoneButtonPause"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_media_pause" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
+
+    <!--app:srcCompat="@android:drawable/ic_notification_overlay"-->
+    <!--app:srcCompat="@android:drawable/ic_media_pause"-->
