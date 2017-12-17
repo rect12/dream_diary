@@ -150,40 +150,7 @@ public class CreateDreamActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    public void microphoneButtonAction(View v) {
-
-        MediaRecorder media = new MediaRecorder();
-
-        //mFileName = getExternalCacheDir().getAbsolutePath();
-        //mFileName += "/audiorecordtest.3gp";
-
-        //указываем источник звука
-        media.setAudioSource(MediaRecorder.AudioSource.MIC);
-
-        //указываем результирующий формат и сжатие звука
-        media.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-        media.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        //указываем путь к файлу, в который будут сохранены аудиоданные
-        String path = "";
-        media.setOutputFile(path);
-
-        try {
-            media.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        media.start();
-
-        //media.stop();
-
-        //media.pause();
-
-    }
-
+        
 
     private void startAudioRecording(){
         try {
