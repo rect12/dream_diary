@@ -1,6 +1,7 @@
 package bobrovskaya.rect12.dreamdiary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +69,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         descriptionView.setText(dream.getDescription());
         dateView.setText(dream.getDate());
 
+        // Смена активности при нажатии на элемент списка
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, CreateDreamActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
         //Button button = viewHolder.messageButton;
         //button.setText(contact.isOnline() ? "Message" : "Offline");
         //button.setEnabled(contact.isOnline());
