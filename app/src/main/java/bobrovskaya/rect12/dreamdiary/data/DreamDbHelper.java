@@ -38,8 +38,20 @@ public class DreamDbHelper extends SQLiteOpenHelper {
      * вызывается при обновлении схемы базы данных
      * params: DataBase, oldVersion, newVersion
      */
+
+    //TODO реализовать, если есть изменения структуры таблицы бд
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+    }
+
+    public void deleteItemById(SQLiteDatabase sqLiteDatabase, int id) {
+        sqLiteDatabase.delete(DreamsTable.TABLE_NAME, "_ID = " + id, null);
+        //TODO удаление аудио записи
+    }
+
+    //TODO реализовать данный метод
+    public void changeItemById(SQLiteDatabase sqLiteDatabase) {
+//        sqLiteDatabase.update(DreamsTable.TABLE_NAME, );
     }
 }

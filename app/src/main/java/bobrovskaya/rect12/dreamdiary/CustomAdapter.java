@@ -1,14 +1,21 @@
 package bobrovskaya.rect12.dreamdiary;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
+
+import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 
 /**
  * Created by rect on 12/17/17.
@@ -18,10 +25,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     private List<Dream> mDreams;
     private Context mContext;
+    private DreamDbHelper dreamDbHelper;
 
     public CustomAdapter(Context context, List<Dream> dreams) {
         mDreams = dreams;
         mContext = context;
+        dreamDbHelper = new DreamDbHelper(context);
     }
 
     private Context getContext() {
@@ -32,6 +41,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         public TextView nameTextView;
         public TextView dateTextView;
         public TextView descriptionTextView;
+        public Button deleteDreamButton;
+        public Button changeDreamButton;
 
 
         public ViewHolder(View itemView) {
@@ -40,6 +51,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             nameTextView = itemView.findViewById(R.id.nameView);
             dateTextView = itemView.findViewById(R.id.dateView);
             descriptionTextView = itemView.findViewById(R.id.descriptionView);
+            deleteDreamButton = itemView.findViewById(R.id.delete_dream_button);
+            changeDreamButton = itemView.findViewById(R.id.change_dream_button);
         }
     }
 
@@ -57,9 +70,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(CustomAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(CustomAdapter.ViewHolder viewHolder, final int position) {
         // Get the data model based on position
-        Dream dream = mDreams.get(position);
+        final Dream dream = mDreams.get(position);
 
         // Set item views based on your views and data model
         TextView nameView = viewHolder.nameTextView;
@@ -67,6 +80,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         TextView dateView = viewHolder.dateTextView;
         nameView.setText(dream.getName());
         descriptionView.setText(dream.getDescription());
+//                descriptionView.setText(Integer.toString(dream.getId()));
         dateView.setText(dream.getDate());
 
         // Смена активности при нажатии на элемент списка
@@ -77,6 +91,53 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 mContext.startActivity(intent);
             }
         });
+
+        // Удаление записи из списка снов
+        viewHolder.deleteDreamButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle(R.string.delete_alert_dialog_title)
+                        .setMessage(R.string.delete_alert_dialog_text)
+                        .setCancelable(true)
+                        .setPositiveButton("Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        removeDreamFromDb(dream.getId());
+                                        Toast.makeText(mContext, R.string.delete_alert_dialog_positive_toast, Toast.LENGTH_SHORT).show();
+                                        mDreams.remove(position);
+
+                                        // Сообщить адаптеру, что удалили элемент
+                                        notifyItemRemoved(position);
+                                        notifyItemRangeChanged(position, mDreams.size());
+                                    }
+                                    })
+                        .setNegativeButton("No",
+                                null);
+                AlertDialog alert = builder.create();
+                alert.show();
+
+/*
+                removeDreamFromDb(dream.getId());
+                Toast.makeText(mContext, "запись успешно удалена", Toast.LENGTH_SHORT).show();
+                mDreams.remove(position);
+
+                // Сообщить адаптеру, что удалили элемент
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mDreams.size());*/
+            }
+        });
+
+        // TODO реализовать данный метод
+        // изменение данных в записи
+        viewHolder.changeDreamButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
         //Button button = viewHolder.messageButton;
         //button.setText(contact.isOnline() ? "Message" : "Offline");
         //button.setEnabled(contact.isOnline());
@@ -87,5 +148,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         return mDreams.size();
     }
 
+    private void removeDreamFromDb(int id) {
+        dreamDbHelper.deleteItemById(dreamDbHelper.getWritableDatabase(), id);
 
+    }
 }

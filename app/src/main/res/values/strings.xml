@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_text">Dream Diary</string>
     <string name="add_db_dream">Save</string>
+    <string name="delete_dream_button">Delete</string>
+    <string name="change_dream_button">Change</string>
+    <string name="delete_alert_dialog_title">Alert!</string>
+    <string name="delete_alert_dialog_text">Do you really want to delete this dream?</string>
+    <string name="delete_alert_dialog_positive_toast">dream was successfully removed</string>
 </resources>

@@ -90,10 +90,10 @@ public class DreamListFragment extends Fragment {
                 time = new Date(currentDate);
                 String currentDescription = cursor.getString(descriptionColumnIndex);
                 // Добавляем значения каждого столбца
-                dreamList.add(new Dream(currentName, time.toString(), currentDescription));
+                dreamList.add(new Dream(currentID, currentName, time.toString(), currentDescription));
             }
         } finally {
-            // Всегда закрываем курсор после чтения
+            // Закрываем курсор после чтения
             cursor.close();
             adapter.notifyDataSetChanged();
         }
