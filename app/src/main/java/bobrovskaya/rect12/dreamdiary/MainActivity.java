@@ -16,9 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
-import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

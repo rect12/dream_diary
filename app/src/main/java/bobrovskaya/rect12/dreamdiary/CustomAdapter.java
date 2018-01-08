@@ -80,7 +80,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         TextView dateView = viewHolder.dateTextView;
         nameView.setText(dream.getName());
         descriptionView.setText(dream.getDescription());
-//                descriptionView.setText(Integer.toString(dream.getId()));
         dateView.setText(dream.getDate());
 
         // Смена активности при нажатии на элемент списка
@@ -116,15 +115,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                                 null);
                 AlertDialog alert = builder.create();
                 alert.show();
-
-/*
-                removeDreamFromDb(dream.getId());
-                Toast.makeText(mContext, "запись успешно удалена", Toast.LENGTH_SHORT).show();
-                mDreams.remove(position);
-
-                // Сообщить адаптеру, что удалили элемент
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, mDreams.size());*/
             }
         });
 
@@ -137,10 +127,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             }
         });
 
-
-        //Button button = viewHolder.messageButton;
-        //button.setText(contact.isOnline() ? "Message" : "Offline");
-        //button.setEnabled(contact.isOnline());
     }
 
     @Override
