@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,7 +85,7 @@ public class DreamListFragment extends Fragment {
                 // Используем индекс для получения строки или числа
                 int currentID = cursor.getInt(idColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
-                int currentDate = cursor.getInt(dateColumnIndex);
+                long currentDate = cursor.getLong(dateColumnIndex);
                 time = new Date(currentDate);
                 String currentDescription = cursor.getString(descriptionColumnIndex);
                 // Добавляем значения каждого столбца
