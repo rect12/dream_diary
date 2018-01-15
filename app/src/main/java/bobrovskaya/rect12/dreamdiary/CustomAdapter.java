@@ -123,7 +123,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         viewHolder.changeDreamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(mContext, CreateDreamActivity.class);
+                mContext.startActivity(intent);
             }
         });
 
