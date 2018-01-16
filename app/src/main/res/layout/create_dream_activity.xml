@@ -14,17 +14,18 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="330dp"
-        android:layout_height="265dp"
+        android:layout_width="334dp"
+        android:layout_height="281dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="32dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.373">
 
         <EditText
             android:id="@+id/createDreamNameText"
@@ -32,15 +33,21 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="text" />
+            android:gravity="center"
+            android:hint="Theme"
+            android:inputType="text"
+            android:textColorLink="@android:color/black" />
 
         <EditText
             android:id="@+id/createDreamDreamText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="172dp"
             android:layout_weight="6"
             android:ems="10"
-            android:inputType="textMultiLine" />
+            android:gravity="center_vertical|center_horizontal"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:textColorLink="@android:color/black" />
 
         <LinearLayout
             android:layout_width="match_parent"

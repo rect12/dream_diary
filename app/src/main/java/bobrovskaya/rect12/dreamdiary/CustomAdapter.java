@@ -127,6 +127,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                 Intent intent = new Intent(mContext, CreateDreamActivity.class);
                 intent.putExtra("FLAG_FOR_CHANGING", 2); // просмотр элемента с правом на изменение
                 intent.putExtra("DREAM_ID", dream.getId());
+
                 mContext.startActivity(intent);
             }
         });
