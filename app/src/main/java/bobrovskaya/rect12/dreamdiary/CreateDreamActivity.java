@@ -39,6 +39,11 @@ public class CreateDreamActivity extends AppCompatActivity {
     private ImageButton pauseButton;
     private String filePath;
     private Boolean isRecording = false;
+    private TextView nameView;
+    private TextView descriptionView;
+
+    private Dream curDream = null;
+    private int flagForChanging = -1;
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
@@ -68,6 +73,10 @@ public class CreateDreamActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        Intent intent = getIntent();
+
+        nameView = findViewById(R.id.createDreamNameText);
+        descriptionView = findViewById(R.id.createDreamDreamText);
         startButton = findViewById(R.id.createDreamMicrophoneButtonStart);
         pauseButton = findViewById(R.id.createDreamMicrophoneButtonPause);
         pauseButton.setEnabled(false);
@@ -95,7 +104,26 @@ public class CreateDreamActivity extends AppCompatActivity {
             }
         });
 
+        //TODO вынести в общие константы проекта
+        // 0 -- создание нового элемента
+        // 1 -- просмотр элемента без права на изменение
+        // 2 -- просмотр элемента с правом на изменение
+        flagForChanging = intent.getIntExtra("FLAG_FOR_CHANGING", 0);
+        if (flagForChanging > 0) {
+            int dreamId = intent.getIntExtra("DREAM_ID", -1);
+            DreamDbHelper dbHelper = new DreamDbHelper(this);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            curDream = dbHelper.getDreamById(db, dreamId);
 
+            nameView.setText(curDream.getName());
+            descriptionView.setText(curDream.getDescription());
+
+
+            if (flagForChanging == 1) {
+                nameView.setEnabled(false);
+                descriptionView.setEnabled(false);
+            }
+        }
     }
 
     @Override
@@ -108,46 +136,60 @@ public class CreateDreamActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_dream_create, menu);
+        if (flagForChanging == 1) {
+            menu.findItem(R.id.add_db_dream).setVisible(false);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        int itemId = item.getItemId();
 
-        if (id == R.id.add_db_dream) {
-            if (!(isRecording)) {
-                TextView nameView = findViewById(R.id.createDreamNameText);
-                TextView descriptionView = findViewById(R.id.createDreamDreamText);
+        DreamDbHelper mDbHelper = new DreamDbHelper(this);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-                String name = nameView.getText().toString();
-                String description = descriptionView.getText().toString();
-                Date date = new Date();
+        String name = nameView.getText().toString();
+        String description = descriptionView.getText().toString();
+        Date date = new Date();
+        Dream newDream = new Dream(-1, name, date.toString(), description);
 
-                DreamDbHelper mDbHelper = new DreamDbHelper(this);
+        if (itemId == R.id.add_db_dream && !(isRecording)) {
+            if (flagForChanging == 0) {
+                createNewDream(db, newDream);
 
-                SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-                ContentValues values = new ContentValues();
-                values.put(DreamsTable.COLUMN_NAME, name);
-                values.put(DreamsTable.COLUMN_DESCRIPTION, description);
-                values.put(DreamsTable.COLUMN_DATE, date.getTime());
-                values.put(DreamsTable.COLUMN_AUDIO_PATH, filePath);
-
-                long newRowId = db.insert(DreamsTable.TABLE_NAME, null, values);
-                if (newRowId == -1) {
-                    // Если ID  -1, значит произошла ошибка
-                    Toast.makeText(this, "Error while creating dream", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Dream added " + newRowId, Toast.LENGTH_SHORT).show();
+            } else {
+                newDream.setDate(curDream.getDate());
+                int numUpdatedRows = mDbHelper.changeItemById(db, curDream.getId(), newDream);
+                if (numUpdatedRows > 0) {
+                    Toast.makeText(this, "Dream succesfully updated", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(CreateDreamActivity.this, MainActivity.class);
                     startActivity(intent);
+                } else {
+                    Toast.makeText(this, "Error while updating dream", Toast.LENGTH_SHORT).show();
                 }
             }
-
-        }
+            }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createNewDream(SQLiteDatabase db, Dream newDream) {
+        ContentValues values = new ContentValues();
+        values.put(DreamsTable.COLUMN_NAME, newDream.getName());
+        values.put(DreamsTable.COLUMN_DESCRIPTION, newDream.getDescription());
+        values.put(DreamsTable.COLUMN_DATE, newDream.getDate());
+        values.put(DreamsTable.COLUMN_AUDIO_PATH, filePath);
+
+        long newRowId = db.insert(DreamsTable.TABLE_NAME, null, values);
+        if (newRowId == -1) {
+            // Если ID  -1, значит произошла ошибка
+            Toast.makeText(this, "Error while creating dream", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Dream added " + newRowId, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(CreateDreamActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
 
@@ -179,9 +221,5 @@ public class CreateDreamActivity extends AppCompatActivity {
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         mediaRecorder.setOutputFile(filePath);
     }
-
-
-
-
 
 }

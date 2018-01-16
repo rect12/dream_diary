@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import lombok.Getter;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(MainActivity.this, CreateDreamActivity.class);
+                    intent.putExtra("FLAG_FOR_CHANGING", 0); // 0 -- создание нового элемента
                     startActivity(intent);
                 }
             });
