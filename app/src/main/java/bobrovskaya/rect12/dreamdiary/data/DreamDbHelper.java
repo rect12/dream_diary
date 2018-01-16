@@ -54,4 +54,8 @@ public class DreamDbHelper extends SQLiteOpenHelper {
     public void changeItemById(SQLiteDatabase sqLiteDatabase) {
 //        sqLiteDatabase.update(DreamsTable.TABLE_NAME, );
     }
+
+    public void getDreamById(SQLiteDatabase sqLiteDatabase, int id) {
+
+    }
 }

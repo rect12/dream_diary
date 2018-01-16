@@ -87,6 +87,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, CreateDreamActivity.class);
+                intent.putExtra("FLAG_FOR_CHANGING", 1); // 1 -- просмотр элемента, без права на изменение
+                intent.putExtra("DREAM_ID", dream.getId());
                 mContext.startActivity(intent);
             }
         });
@@ -118,12 +120,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             }
         });
 
-        // TODO реализовать данный метод
-        // изменение данных в записи
+        // открытие активити с изменением данных записи
         viewHolder.changeDreamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(mContext, CreateDreamActivity.class);
+                intent.putExtra("FLAG_FOR_CHANGING", 2); // просмотр элемента с правом на изменение
+                intent.putExtra("DREAM_ID", dream.getId());
+                mContext.startActivity(intent);
             }
         });
 

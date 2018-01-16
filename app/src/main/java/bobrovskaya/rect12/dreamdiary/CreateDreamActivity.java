@@ -39,6 +39,8 @@ public class CreateDreamActivity extends AppCompatActivity {
     private ImageButton pauseButton;
     private String filePath;
     private Boolean isRecording = false;
+    private TextView nameView;
+    private TextView descriptionView;
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
@@ -68,6 +70,18 @@ public class CreateDreamActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        //TODO вынести в общие константы проекта
+        // 0 -- создание нового элемента
+        // 1 -- просмотр элемента без права на изменение
+        // 2 -- просмотр элемента с правом на изменение
+        int flagForChanging = Integer.parseInt(getIntent().getStringExtra("FLAG_FOR_CHANGING"));
+        if (flagForChanging > 0) {
+            int dreamId = Integer.parseInt(getIntent().getStringExtra("DREAM_ID"));
+//            Dream curDream = ;
+        }
+
+        nameView = findViewById(R.id.createDreamNameText);
+        descriptionView = findViewById(R.id.createDreamDreamText);
         startButton = findViewById(R.id.createDreamMicrophoneButtonStart);
         pauseButton = findViewById(R.id.createDreamMicrophoneButtonPause);
         pauseButton.setEnabled(false);
@@ -94,8 +108,6 @@ public class CreateDreamActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     @Override
@@ -117,9 +129,6 @@ public class CreateDreamActivity extends AppCompatActivity {
 
         if (id == R.id.add_db_dream) {
             if (!(isRecording)) {
-                TextView nameView = findViewById(R.id.createDreamNameText);
-                TextView descriptionView = findViewById(R.id.createDreamDreamText);
-
                 String name = nameView.getText().toString();
                 String description = descriptionView.getText().toString();
                 Date date = new Date();
@@ -179,9 +188,5 @@ public class CreateDreamActivity extends AppCompatActivity {
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         mediaRecorder.setOutputFile(filePath);
     }
-
-
-
-
 
 }
