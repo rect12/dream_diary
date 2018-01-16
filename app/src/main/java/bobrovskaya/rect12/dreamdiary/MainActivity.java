@@ -2,8 +2,11 @@ package bobrovskaya.rect12.dreamdiary;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 
 import android.view.View;
@@ -15,22 +18,49 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import lombok.Getter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String APP_PREFERENCES = "mysettings";
+    public static final String APP_PREFERENCES_THEME = "THEME";
+
+    SharedPreferences mSettings;
+
     FragmentTransaction fTrans;
     FloatingActionButton fab;
+    Toolbar toolbar;
 //    private DreamDbHelper dreamDbHelper;
+
+    public void checkSharedPreferences() {
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+
+        if(mSettings.contains(APP_PREFERENCES_THEME)) {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "THEME: " + mSettings.getInt(APP_PREFERENCES_THEME, 0),
+                    Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        else {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "THEME не существует", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        int theme = sp.getInt(APP_PREFERENCES_THEME, R.style.AppTheme);
+        setTheme(theme);*/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        checkSharedPreferences();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -50,6 +80,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        checkSharedPreferences();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -84,6 +115,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        checkSharedPreferences();
         int id = item.getItemId();
 
         Fragment fragment = null;

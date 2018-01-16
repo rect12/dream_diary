@@ -11,10 +11,10 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_create_dream"
-
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/img_nav_small"
+            app:popupTheme="@style/Base.Theme.AppCompat.Light.DarkActionBar" />
 
     </android.support.design.widget.AppBarLayout>
 
