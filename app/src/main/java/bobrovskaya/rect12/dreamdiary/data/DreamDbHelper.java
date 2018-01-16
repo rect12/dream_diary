@@ -1,5 +1,6 @@
 package bobrovskaya.rect12.dreamdiary.data;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -55,9 +56,15 @@ public class DreamDbHelper extends SQLiteOpenHelper {
         //TODO удаление аудио записи
     }
 
-    //TODO реализовать данный метод
-    public void changeItemById(SQLiteDatabase sqLiteDatabase) {
-//        sqLiteDatabase.update(DreamsTable.TABLE_NAME, );
+    
+    public int changeItemById(SQLiteDatabase sqLiteDatabase, int dreamId, Dream newDream) {
+        ContentValues values = new ContentValues();
+        values.put(DreamsTable.COLUMN_NAME, newDream.getName());
+        values.put(DreamsTable.COLUMN_DESCRIPTION, newDream.getDescription());
+//        values.put(DreamsTable.COLUMN_DATE, newDream.getDate());
+//        values.put(DreamsTable.COLUMN_AUDIO_PATH, filePath);
+
+        return sqLiteDatabase.update(DreamsTable.TABLE_NAME, values, "_ID = " + dreamId, null);
     }
 
     @Nullable
