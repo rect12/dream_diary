@@ -7,10 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import bobrovskaya.rect12.dreamdiary.Dream;
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
+
+import static bobrovskaya.rect12.dreamdiary.GsonMethods.getListFromJson;
+
 /**
  * Created by rect on 12/16/17.
  */
@@ -93,6 +97,7 @@ public class DreamDbHelper extends SQLiteOpenHelper {
             int nameColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_NAME);
             int dateColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DATE);
             int descriptionColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DESCRIPTION);
+            int audioPathColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_AUDIO_PATH );
 
             Date time;
             cursor.moveToNext();
@@ -102,8 +107,9 @@ public class DreamDbHelper extends SQLiteOpenHelper {
             long currentDate = cursor.getLong(dateColumnIndex);
             time = new Date(currentDate);
             String currentDescription = cursor.getString(descriptionColumnIndex);
+            ArrayList<String> audioPaths = getListFromJson(cursor.getString(audioPathColumnIndex));
             // Добавляем значения каждого столбца
-            dream = new Dream(currentID, currentName, time.toString(), currentDescription);
+            dream = new Dream(currentID, currentName, time.toString(), currentDescription, audioPaths);
 
         } finally {
             // Закрываем курсор после чтения

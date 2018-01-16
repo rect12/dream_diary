@@ -1,5 +1,6 @@
 package bobrovskaya.rect12.dreamdiary;
 
+import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,11 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 import android.Manifest;
+
+import static bobrovskaya.rect12.dreamdiary.GsonMethods.getJsonFromList;
 
 /**
  * Created by rect on 12/2/17.
@@ -42,8 +46,11 @@ public class CreateDreamActivity extends AppCompatActivity {
     private TextView nameView;
     private TextView descriptionView;
 
+    AudioViewFragment audioViewFragment;
+
     private Dream curDream = null;
     private int flagForChanging = -1;
+    FragmentTransaction fTrans;
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
@@ -75,6 +82,8 @@ public class CreateDreamActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+//        audioViewFragment = (AudioViewFragment) getFragmentManager().findFragmentById(R.id.audioListFragment);
+        audioViewFragment = new AudioViewFragment();
         nameView = findViewById(R.id.createDreamNameText);
         descriptionView = findViewById(R.id.createDreamDreamText);
         startButton = findViewById(R.id.createDreamMicrophoneButtonStart);
@@ -109,8 +118,9 @@ public class CreateDreamActivity extends AppCompatActivity {
         // 1 -- просмотр элемента без права на изменение
         // 2 -- просмотр элемента с правом на изменение
         flagForChanging = intent.getIntExtra("FLAG_FOR_CHANGING", 0);
+        int dreamId = -1;
         if (flagForChanging > 0) {
-            int dreamId = intent.getIntExtra("DREAM_ID", -1);
+            dreamId = intent.getIntExtra("DREAM_ID", -1);
             DreamDbHelper dbHelper = new DreamDbHelper(this);
             SQLiteDatabase db = dbHelper.getReadableDatabase();
             curDream = dbHelper.getDreamById(db, dreamId);
@@ -124,6 +134,15 @@ public class CreateDreamActivity extends AppCompatActivity {
                 descriptionView.setEnabled(false);
             }
         }
+
+        if (flagForChanging > 0) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("dreamId", dreamId);
+            audioViewFragment.setArguments(bundle);
+            fTrans = getFragmentManager().beginTransaction();
+            fTrans.add(R.id.audioListFragment, audioViewFragment).commit();
+        }
+
     }
 
     @Override
@@ -152,7 +171,9 @@ public class CreateDreamActivity extends AppCompatActivity {
         String name = nameView.getText().toString();
         String description = descriptionView.getText().toString();
         Date date = new Date();
-        Dream newDream = new Dream(-1, name, date.toString(), description);
+        ArrayList<String> audioPaths = new ArrayList<>();
+        audioPaths.add(filePath);
+        Dream newDream = new Dream(-1, name, date.toString(), description, audioPaths);
 
         if (itemId == R.id.add_db_dream && !(isRecording)) {
             if (flagForChanging == 0) {
@@ -179,7 +200,7 @@ public class CreateDreamActivity extends AppCompatActivity {
         values.put(DreamsTable.COLUMN_NAME, newDream.getName());
         values.put(DreamsTable.COLUMN_DESCRIPTION, newDream.getDescription());
         values.put(DreamsTable.COLUMN_DATE, newDream.getDate());
-        values.put(DreamsTable.COLUMN_AUDIO_PATH, filePath);
+        values.put(DreamsTable.COLUMN_AUDIO_PATH, getJsonFromList(newDream.getAudioPaths()));
 
         long newRowId = db.insert(DreamsTable.TABLE_NAME, null, values);
         if (newRowId == -1) {
@@ -191,7 +212,6 @@ public class CreateDreamActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
 
     private void startAudioRecording(){
         try {

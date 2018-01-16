@@ -20,6 +20,8 @@ import java.util.Date;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 
+import static bobrovskaya.rect12.dreamdiary.GsonMethods.getListFromJson;
+
 /**
  * Created by rect on 12/2/17.
  */
@@ -93,6 +95,7 @@ public class DreamListFragment extends Fragment {
             int nameColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_NAME);
             int dateColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DATE);
             int descriptionColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DESCRIPTION);
+            int audioPathColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_AUDIO_PATH );
 
             Date time;
             // Проходим через все ряды
@@ -103,8 +106,9 @@ public class DreamListFragment extends Fragment {
                 long currentDate = cursor.getLong(dateColumnIndex);
                 time = new Date(currentDate);
                 String currentDescription = cursor.getString(descriptionColumnIndex);
+                ArrayList<String> audioPaths = getListFromJson(cursor.getString(audioPathColumnIndex));
                 // Добавляем значения каждого столбца
-                dreamList.add(new Dream(currentID, currentName, time.toString(), currentDescription));
+                dreamList.add(new Dream(currentID, currentName, time.toString(), currentDescription, audioPaths));
             }
         } finally {
             // Закрываем курсор после чтения
