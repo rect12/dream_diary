@@ -1,9 +1,15 @@
 package bobrovskaya.rect12.dreamdiary.data;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 
+import java.util.Date;
+
+import bobrovskaya.rect12.dreamdiary.Dream;
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 /**
  * Created by rect on 12/16/17.
@@ -50,8 +56,62 @@ public class DreamDbHelper extends SQLiteOpenHelper {
         //TODO удаление аудио записи
     }
 
-    //TODO реализовать данный метод
-    public void changeItemById(SQLiteDatabase sqLiteDatabase) {
-//        sqLiteDatabase.update(DreamsTable.TABLE_NAME, );
+    
+    public int changeItemById(SQLiteDatabase sqLiteDatabase, int dreamId, Dream newDream) {
+        ContentValues values = new ContentValues();
+        values.put(DreamsTable.COLUMN_NAME, newDream.getName());
+        values.put(DreamsTable.COLUMN_DESCRIPTION, newDream.getDescription());
+//        values.put(DreamsTable.COLUMN_DATE, newDream.getDate());
+//        values.put(DreamsTable.COLUMN_AUDIO_PATH, filePath);
+
+        return sqLiteDatabase.update(DreamsTable.TABLE_NAME, values, "_ID = " + dreamId, null);
+    }
+
+    @Nullable
+    public Dream getDreamById(SQLiteDatabase sqLiteDatabase, int id) {
+        Dream dream = null;
+        String[] projection = {
+                DreamsTable._ID,
+                DreamsTable.COLUMN_DATE,
+                DreamsTable.COLUMN_NAME,
+                DreamsTable.COLUMN_AUDIO_PATH,
+                DreamsTable.COLUMN_DESCRIPTION
+        };
+
+        Cursor cursor = sqLiteDatabase.query(
+                DreamsTable.TABLE_NAME,
+                projection,
+                "_id = " + id,
+                null,
+                null,
+                null,
+                null);
+
+        try {
+            // Узнаем индекс каждого столбца
+            int idColumnIndex = cursor.getColumnIndex(DreamsTable._ID);
+            int nameColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_NAME);
+            int dateColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DATE);
+            int descriptionColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DESCRIPTION);
+
+            Date time;
+            cursor.moveToNext();
+            // Используем индекс для получения строки или числа
+            int currentID = cursor.getInt(idColumnIndex);
+            String currentName = cursor.getString(nameColumnIndex);
+            long currentDate = cursor.getLong(dateColumnIndex);
+            time = new Date(currentDate);
+            String currentDescription = cursor.getString(descriptionColumnIndex);
+            // Добавляем значения каждого столбца
+            dream = new Dream(currentID, currentName, time.toString(), currentDescription);
+
+        } finally {
+            // Закрываем курсор после чтения
+            cursor.close();
+        }
+
+        return dream;
+
+
     }
 }
