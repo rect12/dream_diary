@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +48,20 @@ public class DreamListFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+
+        final FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    fab.hide();
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    fab.show();
+                }
+            }
+        });
 
         getAllDreams();
 
@@ -96,6 +111,7 @@ public class DreamListFragment extends Fragment {
             cursor.close();
             adapter.notifyDataSetChanged();
         }
-
     }
+
+
 }
