@@ -70,15 +70,7 @@ public class CreateDreamActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //TODO вынести в общие константы проекта
-        // 0 -- создание нового элемента
-        // 1 -- просмотр элемента без права на изменение
-        // 2 -- просмотр элемента с правом на изменение
-        int flagForChanging = Integer.parseInt(getIntent().getStringExtra("FLAG_FOR_CHANGING"));
-        if (flagForChanging > 0) {
-            int dreamId = Integer.parseInt(getIntent().getStringExtra("DREAM_ID"));
-//            Dream curDream = ;
-        }
+        Intent intent = getIntent();
 
         nameView = findViewById(R.id.createDreamNameText);
         descriptionView = findViewById(R.id.createDreamDreamText);
@@ -108,6 +100,29 @@ public class CreateDreamActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //TODO вынести в общие константы проекта
+        // 0 -- создание нового элемента
+        // 1 -- просмотр элемента без права на изменение
+        // 2 -- просмотр элемента с правом на изменение
+        int flagForChanging = intent.getIntExtra("FLAG_FOR_CHANGING", 0);
+        if (flagForChanging > 0) {
+            int dreamId = intent.getIntExtra("DREAM_ID", -1);
+            DreamDbHelper dbHelper = new DreamDbHelper(this);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            Dream curDream = dbHelper.getDreamById(db, dreamId);
+
+            nameView.setText(curDream.getName());
+            descriptionView.setText(curDream.getDescription());
+
+            if (flagForChanging == 1) {
+                nameView.setEnabled(false);
+                descriptionView.setEnabled(false);
+            }
+
+
+
+        }
     }
 
     @Override

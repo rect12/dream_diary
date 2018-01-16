@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -125,7 +124,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, CreateDreamActivity.class);
-                intent.putExtra("FLAG_FOR_CHANGING", 2); // просмотр элемента с правом на изменение
+                intent.putExtra("FLAG_FOR_CHANGING", 2); //2 -- просмотр элемента с правом на изменение
                 intent.putExtra("DREAM_ID", dream.getId());
 
                 mContext.startActivity(intent);
