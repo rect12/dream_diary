@@ -10,14 +10,10 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 
-import bobrovskaya.rect12.dreamdiary.Dream;
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 
-import static bobrovskaya.rect12.dreamdiary.GsonMethods.getListFromJson;
+import static bobrovskaya.rect12.dreamdiary.data.GsonMethods.getListFromJson;
 
-/**
- * Created by rect on 12/16/17.
- */
 
 public class DreamDbHelper extends SQLiteOpenHelper {
 

@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.data;
 
 import java.util.List;
 
@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 
-/**
- * Created by rect on 12/17/17.
- */
 
 @AllArgsConstructor
 public class Dream {

@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.fragments;
 
 import android.app.Fragment;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,19 +6,17 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import bobrovskaya.rect12.dreamdiary.adapters.CustomAdapterAudioView;
+import bobrovskaya.rect12.dreamdiary.data.Dream;
+import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 
-/**
- * Created by rect on 1/16/18.
- */
 
 public class AudioViewFragment extends Fragment {
     private DreamDbHelper dreamDbHelper;

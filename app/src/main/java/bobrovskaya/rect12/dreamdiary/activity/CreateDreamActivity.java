@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.activity;
 
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
@@ -9,8 +9,6 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,15 +24,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import bobrovskaya.rect12.dreamdiary.data.Dream;
+import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
+import bobrovskaya.rect12.dreamdiary.fragments.AudioViewFragment;
+
 import android.Manifest;
 
-import static bobrovskaya.rect12.dreamdiary.GsonMethods.getJsonFromList;
+import static bobrovskaya.rect12.dreamdiary.data.GsonMethods.getJsonFromList;
 
-/**
- * Created by rect on 12/2/17.
- */
 
 public class CreateDreamActivity extends AppCompatActivity {
 

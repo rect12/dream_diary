@@ -89,6 +89,6 @@
         tools:layout="@layout/audio_view_fragment" >
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>
-    <!--android:name="bobrovskaya.rect12.dreamdiary.AudioViewFragment"-->
+    <!--android:nabobrovskaya.rect12.dreamdiary.fragments.AudioViewFragmentment"-->
     <!--app:srcCompat="@android:drawable/ic_notification_overlay"-->
     <!--app:srcCompat="@android:drawable/ic_media_pause"-->

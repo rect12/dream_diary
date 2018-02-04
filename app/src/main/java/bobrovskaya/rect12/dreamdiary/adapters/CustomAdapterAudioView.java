@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,15 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
+import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 
-/**
- * Created by rect on 1/16/18.
- */
 
 public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAudioView.ViewHolder> {
     private List<String> mRecords;

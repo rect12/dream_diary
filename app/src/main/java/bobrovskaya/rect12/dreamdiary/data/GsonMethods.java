@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.data;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -7,9 +7,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by rect on 1/16/18.
- */
 
 public class GsonMethods {
 
