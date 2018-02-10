@@ -1,6 +1,7 @@
 package bobrovskaya.rect12.dreamdiary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,8 +26,48 @@ public class SettingsActivity extends AppCompatActivity {
 
     SharedPreferences mSettings;
 
+    public void updateActivity(View view) {
+        setTheme(R.style.AppThemeDark);
+        //getApplication().setTheme(R.style.AppThemeDark);
+
+        // один из вариантов перезапуска activity
+        // recreate();
+
+        //второй вариант перезапуска activity
+        Intent intent2 = getIntent();
+        finish();
+        startActivity(intent2);
+    }
+
+    public void updateTheme() {
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        int theme = mSettings.getInt(APP_PREFERENCES_THEME, R.style.AppTheme);
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "updateTHEME: " + theme, Toast.LENGTH_SHORT);
+        toast.show();
+        getApplication().setTheme(theme);
+    }
+
+    public void checkSharedPreferences() {
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+
+        if(mSettings.contains(APP_PREFERENCES_THEME)) {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "THEME: " + mSettings.getInt(APP_PREFERENCES_THEME, 0),
+                    Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        else {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "THEME не существует", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        updateTheme();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 

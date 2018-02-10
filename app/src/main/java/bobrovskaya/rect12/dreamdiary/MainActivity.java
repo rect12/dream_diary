@@ -51,12 +51,17 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void updateTheme() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        int theme = sp.getInt(APP_PREFERENCES_THEME, R.style.AppTheme);
+        getApplication().setTheme(theme);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /*SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        int theme = sp.getInt(APP_PREFERENCES_THEME, R.style.AppTheme);
-        setTheme(theme);*/
         super.onCreate(savedInstanceState);
+        updateTheme();
+
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
