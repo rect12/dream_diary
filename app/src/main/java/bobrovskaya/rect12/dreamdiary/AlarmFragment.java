@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,40 +43,47 @@ public class AlarmFragment extends Fragment {
         alarm_off = (Button) view.findViewById(R.id.alarm_off);
         updateText = (TextView) view.findViewById(R.id.updateTimeText);
         timePicker = (TimePicker) view.findViewById(R.id.timePicker);
-        alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        this.mContext = getActivity();
+        alarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
+
 
         final Calendar calendar = Calendar.getInstance();
 
         //intent
-        final Intent my_intent = new Intent(getActivity().getApplicationContext(), AlarmReceiver.class);
+        final Intent myIntent = new Intent(mContext, AlarmReceiver.class);
 
         alarm_on.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.M)
             public void onClick(View v) {
-                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
-                calendar.set(Calendar.MINUTE, timePicker.getMinute());
+                calendar.add(Calendar.SECOND, 3);
 
-                int hour = timePicker.getHour();
-                int minute = timePicker.getMinute();
+                final int hour = timePicker.getCurrentHour();
+                final int minute = timePicker.getCurrentMinute();
 
-                String hour_string = String.valueOf(hour);
-                String minute_string = String.valueOf(minute);
+                Log.e("MyActivity", "In the receiver with " + hour + " and " + minute);
+                setTimeText("You clicked a " + hour + " and " + minute);
 
-                if (minute < 10) {
-                    minute_string = "0" + String.valueOf(minute);
-                }
 
-                setTimeText("Будильник поставлен на " + hour_string + ":" + minute_string);
+                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+                calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
 
-                //pending intent
-                pendingIntent = PendingIntent.getBroadcast(getContext(), 0, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                //alarmmanager
+                myIntent.putExtra("extra", "yes");
+                pendingIntent = PendingIntent.getBroadcast(getContext(), 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+                setTimeText("Будильник поставлен на " + hour + ":" + minute);
+
             }
         });
 
         alarm_off.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                myIntent.putExtra("extra", "no");
+                mContext.sendBroadcast(myIntent);
+
+                alarmManager.cancel(pendingIntent);
+
                 setTimeText("Будильник остановлен!");
             }
         });
