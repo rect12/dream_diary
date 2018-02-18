@@ -16,12 +16,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context,"Wake up",Toast.LENGTH_LONG).show();
 
-        /*String state = intent.getExtras().getString("extra");
+        String state = intent.getExtras().getString("extra");
         Log.e("AlarmActivity", "In the receiver with " + state);
 
         Intent serviceIntent = new Intent(context, RingtonePlayingService.class);
         serviceIntent.putExtra("extra", state);
 
-        context.startService(serviceIntent);*/
+        context.startService(serviceIntent);
     }
 }

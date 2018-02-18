@@ -72,7 +72,13 @@ public class AlarmFragment extends Fragment {
 
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
-                setTimeText("Будильник поставлен на " + hour + ":" + minute);
+                String minute_string = String.valueOf(minute);
+
+                if (minute < 10) {
+                    minute_string = "0" + String.valueOf(minute);
+                }
+
+                setTimeText("Будильник поставлен на " + hour + ":" + minute_string);
 
             }
         });

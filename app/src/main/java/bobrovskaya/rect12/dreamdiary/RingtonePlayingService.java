@@ -43,7 +43,7 @@ public class RingtonePlayingService extends Service {
         Notification mNotify  = new Notification.Builder(this)
                 .setContentTitle("Alarm is working" + "!")
                 .setContentText("Click me!")
-                //.setSmallIcon(R.drawable.ic_action_call)
+                .setSmallIcon(R.drawable.ic_menu_alarm_clock)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
                 .build();
@@ -51,6 +51,7 @@ public class RingtonePlayingService extends Service {
         String state = intent.getExtras().getString("extra");
 
         Log.e("what is going on here  ", state);
+
 
         assert state != null;
         switch (state) {
@@ -81,14 +82,12 @@ public class RingtonePlayingService extends Service {
 
             this.isRunning = false;
             this.startId = 0;
-
         }
         else if (this.isRunning && startId == 1) {
             Log.e("if there is sound ", " and you want start");
 
             this.isRunning = true;
             this.startId = 0;
-
         }
         //if music, alarm off
         //music should stop play
