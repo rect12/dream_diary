@@ -60,7 +60,6 @@ public class AlarmFragment extends Fragment {
                 final int hour = timePicker.getCurrentHour();
                 final int minute = timePicker.getCurrentMinute();
 
-                Log.e("MyActivity", "In the receiver with " + hour + " and " + minute);
                 setTimeText("You clicked a " + hour + " and " + minute);
 
 

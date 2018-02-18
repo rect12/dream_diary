@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.bluetooth.BluetoothClass;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -26,7 +25,6 @@ public class RingtonePlayingService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.e("AlarmActivity", "In the alarm service");
         return null;
     }
 
@@ -41,17 +39,14 @@ public class RingtonePlayingService extends Service {
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent1, 0);
 
         Notification mNotify  = new Notification.Builder(this)
-                .setContentTitle("Alarm is working" + "!")
-                .setContentText("Click me!")
-                .setSmallIcon(R.drawable.ic_menu_alarm_clock)
+                .setContentTitle("Это будильник" + "!")
+                .setContentText("Нажми меня!")
+                .setSmallIcon(R.drawable.img_alarm)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
                 .build();
 
         String state = intent.getExtras().getString("extra");
-
-        Log.e("what is going on here  ", state);
-
 
         assert state != null;
         switch (state) {
@@ -107,7 +102,6 @@ public class RingtonePlayingService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("AlarmActivity", "on Destroy");
         this.isRunning = false;
     }
 }
