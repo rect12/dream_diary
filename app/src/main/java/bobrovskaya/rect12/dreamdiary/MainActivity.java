@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     public void updateTheme() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         int theme = sp.getInt(APP_PREFERENCES_THEME, R.style.AppTheme);
+        Log.d("CUSTOM BLABLA", "MAIN THEME " + theme);
         getApplication().setTheme(theme);
     }
 

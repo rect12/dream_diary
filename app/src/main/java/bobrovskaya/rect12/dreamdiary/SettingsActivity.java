@@ -8,11 +8,11 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -27,16 +27,9 @@ public class SettingsActivity extends AppCompatActivity {
     SharedPreferences mSettings;
 
     public void updateActivity(View view) {
-        setTheme(R.style.AppThemeDark);
-        //getApplication().setTheme(R.style.AppThemeDark);
+        //перезапуск активити
+         this.recreate();
 
-        // один из вариантов перезапуска activity
-        // recreate();
-
-        //второй вариант перезапуска activity
-        Intent intent2 = getIntent();
-        finish();
-        startActivity(intent2);
     }
 
     public void updateTheme() {
@@ -45,34 +38,16 @@ public class SettingsActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(),
                 "updateTHEME: " + theme, Toast.LENGTH_SHORT);
         toast.show();
-        getApplication().setTheme(theme);
-    }
 
-    public void checkSharedPreferences() {
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-
-        if(mSettings.contains(APP_PREFERENCES_THEME)) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "THEME: " + mSettings.getInt(APP_PREFERENCES_THEME, 0),
-                    Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        else {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "THEME не существует", Toast.LENGTH_SHORT);
-            toast.show();
-        }
+        setTheme(theme);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         updateTheme();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_create_dream);
-        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -124,7 +99,8 @@ public class SettingsActivity extends AppCompatActivity {
                                 "Выбранной темы не существует", Toast.LENGTH_SHORT);
                         toastTheme.show();
                 }
-                editor.apply();
+
+                editor.commit();
             }
 
             @Override
