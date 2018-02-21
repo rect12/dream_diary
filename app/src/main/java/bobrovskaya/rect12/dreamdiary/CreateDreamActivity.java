@@ -65,22 +65,17 @@ public class CreateDreamActivity extends AppCompatActivity {
 
     }
 
-    public void updateTheme() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        int theme = sp.getInt(APP_PREFERENCES_THEME, R.style.AppTheme);
-        getApplication().setTheme(theme);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeChanger.updateTheme(this);
+
         super.onCreate(savedInstanceState);
-        updateTheme();
 
         setContentView(R.layout.create_dream_activity);
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-        Toolbar toolbar = findViewById(R.id.toolbar_create_dream);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar_create_dream);
+//        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);

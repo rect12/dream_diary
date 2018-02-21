@@ -36,41 +36,16 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
 //    private DreamDbHelper dreamDbHelper;
 
-    public void checkSharedPreferences() {
-        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-
-        if(mSettings.contains(APP_PREFERENCES_THEME)) {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "THEME: " + mSettings.getInt(APP_PREFERENCES_THEME, 0),
-                    Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        else {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "THEME не существует", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
-
-    public void updateTheme() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        int theme = sp.getInt(APP_PREFERENCES_THEME, R.style.AppTheme);
-        Log.d("CUSTOM BLABLA", "MAIN THEME " + theme);
-        getApplication().setTheme(theme);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeChanger.updateTheme(this);
         super.onCreate(savedInstanceState);
-        updateTheme();
 
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        checkSharedPreferences();
+//        toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -87,7 +62,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        checkSharedPreferences();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -118,11 +92,17 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        Log.d("MY", "on resume main");
+        ThemeChanger.updateTheme(this);
+        super.onResume();
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        checkSharedPreferences();
         int id = item.getItemId();
 
         Fragment fragment = null;
@@ -148,6 +128,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
+            finish();
         } else if (id == R.id.nav_alarm_clock) {
             fab = findViewById(R.id.fab);
             fab.hide();
