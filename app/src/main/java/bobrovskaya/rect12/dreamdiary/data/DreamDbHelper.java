@@ -12,6 +12,7 @@ import java.util.Date;
 
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 
+import static bobrovskaya.rect12.dreamdiary.data.GsonMethods.getJsonFromList;
 import static bobrovskaya.rect12.dreamdiary.data.GsonMethods.getListFromJson;
 
 
@@ -57,14 +58,24 @@ public class DreamDbHelper extends SQLiteOpenHelper {
     }
 
     
-    public int changeItemById(SQLiteDatabase sqLiteDatabase, int dreamId, Dream newDream) {
+    public static int changeItemById(SQLiteDatabase sqLiteDatabase, long dreamId, Dream newDream) {
         ContentValues values = new ContentValues();
         values.put(DreamsTable.COLUMN_NAME, newDream.getName());
         values.put(DreamsTable.COLUMN_DESCRIPTION, newDream.getDescription());
 //        values.put(DreamsTable.COLUMN_DATE, newDream.getDate());
-//        values.put(DreamsTable.COLUMN_AUDIO_PATH, filePath);
+        values.put(DreamsTable.COLUMN_AUDIO_PATH, getJsonFromList(newDream.getAudioPaths()));
 
         return sqLiteDatabase.update(DreamsTable.TABLE_NAME, values, "_ID = " + dreamId, null);
+    }
+
+    public static long addItem(SQLiteDatabase sqLiteDatabase, Dream newDream) {
+        ContentValues values = new ContentValues();
+        values.put(DreamsTable.COLUMN_NAME, newDream.getName());
+        values.put(DreamsTable.COLUMN_DESCRIPTION, newDream.getDescription());
+        values.put(DreamsTable.COLUMN_DATE, newDream.getDate());
+        values.put(DreamsTable.COLUMN_AUDIO_PATH, getJsonFromList(newDream.getAudioPaths()));
+
+        return sqLiteDatabase.insert(DreamsTable.TABLE_NAME, null, values);
     }
 
     @Nullable
@@ -113,7 +124,6 @@ public class DreamDbHelper extends SQLiteOpenHelper {
         }
 
         return dream;
-
 
     }
 }

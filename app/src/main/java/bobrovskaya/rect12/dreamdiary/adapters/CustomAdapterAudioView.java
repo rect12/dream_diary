@@ -25,7 +25,6 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
         dreamDbHelper = new DreamDbHelper(context);
     }
 
-
     private Context getContext() {
             return mContext;
     }
@@ -42,45 +41,45 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
         }
     }
 
-        @Override
-        public CustomAdapterAudioView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Context context = parent.getContext();
-            LayoutInflater inflater = LayoutInflater.from(context);
+    @Override
+    public CustomAdapterAudioView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
 
-            // Inflate the custom layout
-            View contactView = inflater.inflate(R.layout.card_view_audio, parent, false);
+        // Inflate the custom layout
+        View contactView = inflater.inflate(R.layout.card_view_audio, parent, false);
 
-            // Return a new holder instance
-            ViewHolder viewHolder = new ViewHolder(contactView);
-            return viewHolder;
-        }
+        // Return a new holder instance
+        ViewHolder viewHolder = new ViewHolder(contactView);
+        return viewHolder;
+    }
 
-        //TODO переделать этот метод, остальные уже переделаны. Подумать над типом переменной mRecords.
-        @Override
-        public void onBindViewHolder(CustomAdapterAudioView.ViewHolder viewHolder, final int position) {
-            // Get the data model based on position
-            final String recordPath= mRecords.get(position);
+    //TODO переделать этот метод, остальные уже переделаны. Подумать над типом переменной mRecords.
+    @Override
+    public void onBindViewHolder(CustomAdapterAudioView.ViewHolder viewHolder, final int position) {
+        // Get the data model based on position
+        final String recordPath= mRecords.get(position);
 
-            // Set item views based on your views and data model
-            TextView audioNameTextView = viewHolder.audioNameTextView;
-            audioNameTextView.setText("Record " + (position+1));
+        // Set item views based on your views and data model
+        TextView audioNameTextView = viewHolder.audioNameTextView;
+        audioNameTextView.setText("Record " + (position+1));
 
-            // Смена активности при нажатии на элемент списка
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        // Смена активности при нажатии на элемент списка
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                }
-            });
+            }
+        });
 
-            // Удаление записи из списка снов
-            viewHolder.playRecordButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        // Удаление записи из списка снов
+        viewHolder.playRecordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-                }
-            });
-        }
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
