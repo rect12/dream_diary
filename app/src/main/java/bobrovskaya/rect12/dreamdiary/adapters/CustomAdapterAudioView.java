@@ -1,6 +1,9 @@
 package bobrovskaya.rect12.dreamdiary.adapters;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import bobrovskaya.rect12.dreamdiary.R;
@@ -18,6 +24,7 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
     private List<String> mRecords;
     private Context mContext;
     private DreamDbHelper dreamDbHelper;
+    MediaPlayer mPlayer;
 
     public CustomAdapterAudioView(Context context, List<String> records) {
         mRecords = records;
@@ -38,6 +45,7 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
 
             audioNameTextView = itemView.findViewById(R.id.audioNameView);
             playRecordButton = itemView.findViewById(R.id.playRecordButton);
+
         }
     }
 
@@ -72,11 +80,22 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
             }
         });
 
-        // Удаление записи из списка снов
+        // Проиграть запись
         viewHolder.playRecordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                File audioFile = new File(recordPath);
+                Uri myUri = Uri.fromFile(audioFile);
+                MediaPlayer mediaPlayer = new MediaPlayer();
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                try {
+                    mediaPlayer.setDataSource(getContext(), myUri);
+                    mediaPlayer.prepare();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+                mediaPlayer.start();
             }
         });
     }
