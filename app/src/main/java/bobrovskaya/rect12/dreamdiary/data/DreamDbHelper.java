@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 
@@ -53,8 +55,14 @@ public class DreamDbHelper extends SQLiteOpenHelper {
     }
 
     public void deleteItemById(SQLiteDatabase sqLiteDatabase, int id) {
+        Dream dream = getDreamById(sqLiteDatabase, id);
+        List<String> paths = dream.getAudioPaths();
+        for(String path: paths) {
+            new File(path).delete();
+        }
+
         sqLiteDatabase.delete(DreamsTable.TABLE_NAME, "_ID = " + id, null);
-        //TODO удаление аудио записи
+
     }
 
     

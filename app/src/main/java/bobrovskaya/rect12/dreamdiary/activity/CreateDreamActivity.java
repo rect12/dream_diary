@@ -30,15 +30,11 @@ import java.util.Date;
 import bobrovskaya.rect12.dreamdiary.data.Dream;
 import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
-import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 import bobrovskaya.rect12.dreamdiary.fragments.AudioViewFragment;
 
 import android.Manifest;
 
 import static android.os.Environment.DIRECTORY_MUSIC;
-import static bobrovskaya.rect12.dreamdiary.data.GsonMethods.getJsonFromList;
-import static java.nio.file.Files.move;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 
 public class CreateDreamActivity extends AppCompatActivity {
