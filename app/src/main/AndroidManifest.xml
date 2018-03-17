@@ -42,6 +42,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
+        <receiver android:name=".AlarmReceiver" />
+        <service android:name=".RingtonePlayingService"
+            android:enabled="true" />
     </application>
 
 </manifest>
