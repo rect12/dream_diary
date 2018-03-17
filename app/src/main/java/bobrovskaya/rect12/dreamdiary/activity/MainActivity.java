@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 
 import android.view.View;
@@ -20,7 +19,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import lombok.Getter;
+import bobrovskaya.rect12.dreamdiary.fragments.AlarmFragment;
+import bobrovskaya.rect12.dreamdiary.fragments.DreamListFragment;
+import bobrovskaya.rect12.dreamdiary.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.fragments;
 
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
@@ -20,9 +20,7 @@ import java.util.Calendar;
 
 import static android.content.Context.ALARM_SERVICE;
 
-/**
- * Created by rect on 12/17/17.
- */
+import bobrovskaya.rect12.dreamdiary.R;
 
 public class AlarmFragment extends Fragment {
 

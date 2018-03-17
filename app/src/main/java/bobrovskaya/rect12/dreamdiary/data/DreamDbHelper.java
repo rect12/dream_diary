@@ -7,13 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import bobrovskaya.rect12.dreamdiary.Dream;
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
-/**
- * Created by rect on 12/16/17.
- */
+
+import static bobrovskaya.rect12.dreamdiary.data.GsonMethods.getJsonFromList;
+import static bobrovskaya.rect12.dreamdiary.data.GsonMethods.getListFromJson;
+
 
 public class DreamDbHelper extends SQLiteOpenHelper {
 
@@ -52,19 +55,35 @@ public class DreamDbHelper extends SQLiteOpenHelper {
     }
 
     public void deleteItemById(SQLiteDatabase sqLiteDatabase, int id) {
+        Dream dream = getDreamById(sqLiteDatabase, id);
+        List<String> paths = dream.getAudioPaths();
+        for(String path: paths) {
+            new File(path).delete();
+        }
+
         sqLiteDatabase.delete(DreamsTable.TABLE_NAME, "_ID = " + id, null);
-        //TODO удаление аудио записи
+
     }
 
     
-    public int changeItemById(SQLiteDatabase sqLiteDatabase, int dreamId, Dream newDream) {
+    public static int changeItemById(SQLiteDatabase sqLiteDatabase, long dreamId, Dream newDream) {
         ContentValues values = new ContentValues();
         values.put(DreamsTable.COLUMN_NAME, newDream.getName());
         values.put(DreamsTable.COLUMN_DESCRIPTION, newDream.getDescription());
 //        values.put(DreamsTable.COLUMN_DATE, newDream.getDate());
-//        values.put(DreamsTable.COLUMN_AUDIO_PATH, filePath);
+        values.put(DreamsTable.COLUMN_AUDIO_PATH, getJsonFromList(newDream.getAudioPaths()));
 
         return sqLiteDatabase.update(DreamsTable.TABLE_NAME, values, "_ID = " + dreamId, null);
+    }
+
+    public static long addItem(SQLiteDatabase sqLiteDatabase, Dream newDream) {
+        ContentValues values = new ContentValues();
+        values.put(DreamsTable.COLUMN_NAME, newDream.getName());
+        values.put(DreamsTable.COLUMN_DESCRIPTION, newDream.getDescription());
+        values.put(DreamsTable.COLUMN_DATE, newDream.getDate());
+        values.put(DreamsTable.COLUMN_AUDIO_PATH, getJsonFromList(newDream.getAudioPaths()));
+
+        return sqLiteDatabase.insert(DreamsTable.TABLE_NAME, null, values);
     }
 
     @Nullable
@@ -93,6 +112,7 @@ public class DreamDbHelper extends SQLiteOpenHelper {
             int nameColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_NAME);
             int dateColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DATE);
             int descriptionColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DESCRIPTION);
+            int audioPathColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_AUDIO_PATH );
 
             Date time;
             cursor.moveToNext();
@@ -102,8 +122,9 @@ public class DreamDbHelper extends SQLiteOpenHelper {
             long currentDate = cursor.getLong(dateColumnIndex);
             time = new Date(currentDate);
             String currentDescription = cursor.getString(descriptionColumnIndex);
+            ArrayList<String> audioPaths = getListFromJson(cursor.getString(audioPathColumnIndex));
             // Добавляем значения каждого столбца
-            dream = new Dream(currentID, currentName, time.toString(), currentDescription);
+            dream = new Dream(currentID, currentName, time.toString(), currentDescription, audioPaths);
 
         } finally {
             // Закрываем курсор после чтения
@@ -111,7 +132,6 @@ public class DreamDbHelper extends SQLiteOpenHelper {
         }
 
         return dream;
-
 
     }
 }

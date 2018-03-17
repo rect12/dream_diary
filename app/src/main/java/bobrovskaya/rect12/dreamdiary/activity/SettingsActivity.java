@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,9 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * Created by rect on 12/2/17.
- */
+import bobrovskaya.rect12.dreamdiary.R;
+
 
 public class SettingsActivity extends AppCompatActivity {
 

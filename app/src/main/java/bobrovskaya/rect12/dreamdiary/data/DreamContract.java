@@ -2,9 +2,6 @@ package bobrovskaya.rect12.dreamdiary.data;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by rect on 12/16/17.
- */
 
 public final class DreamContract {
 
