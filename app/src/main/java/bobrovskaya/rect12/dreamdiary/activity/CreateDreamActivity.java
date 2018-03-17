@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import bobrovskaya.rect12.dreamdiary.ThemeChanger;
 import bobrovskaya.rect12.dreamdiary.data.Dream;
 import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
