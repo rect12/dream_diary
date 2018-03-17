@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import bobrovskaya.rect12.dreamdiary.ThemeChanger;
 import bobrovskaya.rect12.dreamdiary.fragments.AlarmFragment;
 import bobrovskaya.rect12.dreamdiary.fragments.DreamListFragment;
 import bobrovskaya.rect12.dreamdiary.R;

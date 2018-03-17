@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import bobrovskaya.rect12.dreamdiary.R;
+import bobrovskaya.rect12.dreamdiary.ThemeChanger;
 
 
 public class SettingsActivity extends AppCompatActivity {
