@@ -20,6 +20,7 @@ import java.util.Calendar;
 
 import static android.content.Context.ALARM_SERVICE;
 
+import bobrovskaya.rect12.dreamdiary.AlarmReceiver;
 import bobrovskaya.rect12.dreamdiary.R;
 
 public class AlarmFragment extends Fragment {

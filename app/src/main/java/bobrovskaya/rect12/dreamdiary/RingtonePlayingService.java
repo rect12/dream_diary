@@ -12,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import bobrovskaya.rect12.dreamdiary.activity.MainActivity;
+
 /**
  * Created by natasha on 11.02.18.
  */
