@@ -10,6 +10,8 @@
     <string name="delete_alert_dialog_title">Alert!</string>
     <string name="delete_alert_dialog_text">Do you really want to delete this dream?</string>
     <string name="delete_alert_dialog_positive_toast">dream was successfully removed</string>
+    <string name="apply_theme_button">apply!</string>
+
     <string name="alarm_on">Запустить</string>
     <string name="alarm_off">Остановить</string>
     <string name="alarm_question">Будьте внимательны, будильник сработает, если приложение включено в фоновом режиме. По умолчанию стоят звуки волн.</string>

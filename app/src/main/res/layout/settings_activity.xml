@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="bobrovskaya.rect12.dreamdiary.activity.SettingsActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="bobrovskaya.rect12.dreamdiary.activity.SettingsActivity"
 
     <include
         android:id="@+id/include2"
         layout="@layout/create_dream_toolbar"
         android:layout_height="110dp"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
     <LinearLayout
@@ -28,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/include2"
-        app:layout_constraintVertical_bias="0.287">
+        app:layout_constraintVertical_bias="0.3">
 
         <TextView
             android:layout_width="match_parent"
@@ -47,17 +45,28 @@
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="235dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Смена темы" />
 
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:entries="@array/themelist"
                 android:gravity="right|center_vertical" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:onClick="applyTheme"
+                android:padding="1dp"
+                android:text="@string/apply_theme_button"
+                android:textSize="12sp" />
+
 
         </LinearLayout>
 
