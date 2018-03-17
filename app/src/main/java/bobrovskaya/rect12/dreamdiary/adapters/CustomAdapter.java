@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,11 +14,11 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import bobrovskaya.rect12.dreamdiary.data.Dream;
+import bobrovskaya.rect12.dreamdiary.R;
+import bobrovskaya.rect12.dreamdiary.activity.CreateDreamActivity;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 
-/**
- * Created by rect on 12/17/17.
- */
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 

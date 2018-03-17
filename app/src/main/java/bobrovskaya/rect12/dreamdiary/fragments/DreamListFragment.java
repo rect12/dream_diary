@@ -1,4 +1,4 @@
-package bobrovskaya.rect12.dreamdiary;
+package bobrovskaya.rect12.dreamdiary.fragments;
 
 import android.app.Fragment;
 import android.database.Cursor;
@@ -8,21 +8,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import bobrovskaya.rect12.dreamdiary.adapters.CustomAdapter;
+import bobrovskaya.rect12.dreamdiary.data.Dream;
+import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 import bobrovskaya.rect12.dreamdiary.data.DreamContract.DreamsTable;
 
-/**
- * Created by rect on 12/2/17.
- */
+import static bobrovskaya.rect12.dreamdiary.data.GsonMethods.getListFromJson;
+
 
 public class DreamListFragment extends Fragment {
 
@@ -93,6 +93,7 @@ public class DreamListFragment extends Fragment {
             int nameColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_NAME);
             int dateColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DATE);
             int descriptionColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_DESCRIPTION);
+            int audioPathColumnIndex = cursor.getColumnIndex(DreamsTable.COLUMN_AUDIO_PATH );
 
             Date time;
             // Проходим через все ряды
@@ -103,8 +104,9 @@ public class DreamListFragment extends Fragment {
                 long currentDate = cursor.getLong(dateColumnIndex);
                 time = new Date(currentDate);
                 String currentDescription = cursor.getString(descriptionColumnIndex);
+                ArrayList<String> audioPaths = getListFromJson(cursor.getString(audioPathColumnIndex));
                 // Добавляем значения каждого столбца
-                dreamList.add(new Dream(currentID, currentName, time.toString(), currentDescription));
+                dreamList.add(new Dream(currentID, currentName, time.toString(), currentDescription, audioPaths));
             }
         } finally {
             // Закрываем курсор после чтения
