@@ -33,8 +33,7 @@
             android:layout_height="43dp"
             android:layout_weight="1"
             android:gravity="top|center_horizontal"
-            android:text="Настройки"
-            android:textColor="@android:color/black" />
+            android:text="Настройки" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,7 +54,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:entries="@array/themelist"
-                android:gravity="right|center_vertical" />
+                android:gravity="right|center_vertical"
+                android:popupBackground="@color/spinner" />
 
             <Button
                 android:id="@+id/button"
