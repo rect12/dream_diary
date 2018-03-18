@@ -1,4 +1,15 @@
 <resources>
+    <style name="ThemeButtonLight" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/accent_light</item>
+        <item name="colorControlHighlight">@color/accent_light</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="ThemeButtonDark" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">#fff</item>
+        <item name="colorControlHighlight">#fff</item>
+        <item name="android:textColor">@color/accent_dark</item>
+    </style>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
@@ -6,7 +17,11 @@
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorPrimaryDark">@color/primary_dark_light</item>
         <item name="colorAccent">@color/accent_light</item>
-        <item name="android:windowBackground">@color/color1</item>
+        <item name="android:windowBackground">@color/window_background_light</item>
+        <item name="android:textColor">@color/text_primary_light</item>
+        <item name="android:textColorPrimary">@color/text_primary_light</item>
+        <item name="android:windowTitleStyle">@color/text_primary_light</item>
+        <item name="android:buttonStyle">@style/ThemeButtonLight</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -15,11 +30,16 @@
     </style>
 
     <style name="AppThemeDark" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
-        <item name="android:windowBackground">@color/color2</item>
+        <item name="colorPrimary">@color/primary_dark</item>
+        <item name="colorPrimaryDark">@color/primary_dark_dark</item>
+        <item name="colorAccent">@color/accent_dark</item>
+        <item name="android:windowBackground">@color/window_background_dark</item>
+        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:windowTitleStyle">@color/text_primary_dark</item>
+        <item name="android:buttonStyle">@style/ThemeButtonLight</item>
     </style>
+
     <style name="AppThemeDark.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
