@@ -44,6 +44,8 @@ public class AudioViewFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
+        // регистрация контекстного меню для каждой cardView
+//        registerForContextMenu(recyclerView);
 
         getAllRecords(dreamId);
 

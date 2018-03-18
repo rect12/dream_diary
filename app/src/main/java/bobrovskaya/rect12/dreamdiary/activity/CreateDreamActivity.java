@@ -88,8 +88,8 @@ public class CreateDreamActivity extends AppCompatActivity {
         setContentView(R.layout.create_dream_activity);
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-//        Toolbar toolbar = findViewById(R.id.toolbar_create_dream);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_create_dream);
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);

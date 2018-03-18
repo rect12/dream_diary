@@ -5,7 +5,9 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -80,7 +82,37 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
             }
         });
 
-        // Проиграть запись
+        // поялвение кнопки "удалить" при долгом нажатии на запись
+//        viewHolder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener(){
+
+//            @Override
+//            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+//                menuInfo is null
+//                contextMenu.setHeaderTitle("Select The Action");
+//                contextMenu.add(0, view.getId(), 0, "Call");
+//                }
+//            @Override
+//            public boolean onContextItemSelected(MenuItem item) {
+//                int position = -1;
+//                try {
+//                    position = ((BackupRestoreListAdapter)getAdapter()).getPosition();
+//                } catch (Exception e) {
+//                    Log.d(TAG, e.getLocalizedMessage(), e);
+//                    return super.onContextItemSelected(item);
+//                }
+//                switch (item.getItemId()) {
+//                    case R.id.ctx_menu_remove_backup:
+//                        // do your stuff
+//                        break;
+//                    case R.id.ctx_menu_restore_backup:
+//                        // do your stuff
+//                        break;
+//                }
+//                return super.onContextItemSelected(item);
+//            }
+//        });
+
+        // Проиграть запись при нажатии на кнопку проигрывания
         viewHolder.playRecordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
