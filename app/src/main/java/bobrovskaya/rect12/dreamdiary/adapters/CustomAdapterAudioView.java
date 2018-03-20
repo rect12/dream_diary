@@ -1,6 +1,7 @@
 package bobrovskaya.rect12.dreamdiary.adapters;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -8,10 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +22,10 @@ import java.net.URI;
 import java.util.List;
 
 import bobrovskaya.rect12.dreamdiary.R;
+import bobrovskaya.rect12.dreamdiary.data.Dream;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
+import lombok.Getter;
+import lombok.Setter;
 
 
 public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAudioView.ViewHolder> {
@@ -27,6 +33,10 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
     private Context mContext;
     private DreamDbHelper dreamDbHelper;
     MediaPlayer mPlayer;
+    private @Getter @Setter int position;
+
+
+    public static final int IDM_DELETE = 101;
 
     public CustomAdapterAudioView(Context context, List<String> records) {
         mRecords = records;
@@ -41,6 +51,7 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView audioNameTextView;
         public ImageButton playRecordButton;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -66,51 +77,23 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
 
     //TODO переделать этот метод, остальные уже переделаны. Подумать над типом переменной mRecords.
     @Override
-    public void onBindViewHolder(CustomAdapterAudioView.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final CustomAdapterAudioView.ViewHolder viewHolder, final int position) {
         // Get the data model based on position
-        final String recordPath= mRecords.get(position);
+        final String recordPath = mRecords.get(position);
 
         // Set item views based on your views and data model
         TextView audioNameTextView = viewHolder.audioNameTextView;
         audioNameTextView.setText("Record " + (position+1));
 
-        // Смена активности при нажатии на элемент списка
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        // появление кнопки "удалить" при долгом нажатии на запись
+        viewHolder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener(){
+
             @Override
-            public void onClick(View v) {
-
+            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+                contextMenu.add(0, IDM_DELETE, 0, R.string.context_menu_delete_audio);
             }
+
         });
-
-        // поялвение кнопки "удалить" при долгом нажатии на запись
-//        viewHolder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener(){
-
-//            @Override
-//            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-//                menuInfo is null
-//                contextMenu.setHeaderTitle("Select The Action");
-//                contextMenu.add(0, view.getId(), 0, "Call");
-//                }
-//            @Override
-//            public boolean onContextItemSelected(MenuItem item) {
-//                int position = -1;
-//                try {
-//                    position = ((BackupRestoreListAdapter)getAdapter()).getPosition();
-//                } catch (Exception e) {
-//                    Log.d(TAG, e.getLocalizedMessage(), e);
-//                    return super.onContextItemSelected(item);
-//                }
-//                switch (item.getItemId()) {
-//                    case R.id.ctx_menu_remove_backup:
-//                        // do your stuff
-//                        break;
-//                    case R.id.ctx_menu_restore_backup:
-//                        // do your stuff
-//                        break;
-//                }
-//                return super.onContextItemSelected(item);
-//            }
-//        });
 
         // Проиграть запись при нажатии на кнопку проигрывания
         viewHolder.playRecordButton.setOnClickListener(new View.OnClickListener() {
@@ -130,11 +113,32 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
                 mediaPlayer.start();
             }
         });
+
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                setPosition(viewHolder.getAdapterPosition());
+                return false;
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mRecords.size();
+    }
+
+    public void deleteOneAudioRecord(int dreamId, int position) {
+        SQLiteDatabase db = dreamDbHelper.getWritableDatabase();
+        Dream curDream = dreamDbHelper.getDreamById(db, dreamId);
+        List<String> newAudioList = curDream.getAudioPaths();
+        String audioPath = newAudioList.remove(position);
+
+        curDream.setAudioPaths(newAudioList);
+        dreamDbHelper.changeItemById(db, dreamId, curDream);
+
+        File audioFile = new File(audioPath);
+        audioFile.delete();
     }
 
 }

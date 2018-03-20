@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import bobrovskaya.rect12.dreamdiary.ThemeChanger;
+import bobrovskaya.rect12.dreamdiary.adapters.CustomAdapter;
+import bobrovskaya.rect12.dreamdiary.adapters.CustomAdapterAudioView;
 import bobrovskaya.rect12.dreamdiary.data.Dream;
 import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
@@ -88,8 +90,8 @@ public class CreateDreamActivity extends AppCompatActivity {
         setContentView(R.layout.create_dream_activity);
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-        Toolbar toolbar = findViewById(R.id.toolbar_create_dream);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar_create_dream);
+//        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -301,6 +303,5 @@ public class CreateDreamActivity extends AppCompatActivity {
 
         return newAudioPaths;
     }
-
 
 }
