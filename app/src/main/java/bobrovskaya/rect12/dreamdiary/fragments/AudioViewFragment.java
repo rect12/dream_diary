@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import bobrovskaya.rect12.dreamdiary.activity.CreateDreamActivity;
@@ -29,10 +30,11 @@ import lombok.Getter;
 public class AudioViewFragment extends Fragment {
     private DreamDbHelper dreamDbHelper;
     private ArrayList<String> audioList;
-    private CustomAdapterAudioView adapter;
+    private @Getter CustomAdapterAudioView adapter;
     private RecyclerView recyclerView;
     private int dreamId;
     private Context mContext;
+    private String dreamCacheFolderPath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +56,9 @@ public class AudioViewFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         this.mContext = getActivity();
 
+        Bundle args = getArguments();
+        dreamCacheFolderPath = args.getString("dreamCacheFolder", null);
+
         // регистрация контекстного меню для каждой cardView
         registerForContextMenu(recyclerView);
 
@@ -67,6 +72,15 @@ public class AudioViewFragment extends Fragment {
         Dream curDream = dreamDbHelper.getDreamById(db, dreamId);
 
         audioList.addAll(0, curDream.getAudioPaths());
+        if (dreamCacheFolderPath != null) {
+            Log.d("ADD_RECORD", "11");
+            File dreamCacheFolder = new File(dreamCacheFolderPath);
+            for(String filePath: dreamCacheFolder.list()) {
+                Log.d("ADD_RECORD", dreamCacheFolder + "\\" + filePath);
+                audioList.add(dreamCacheFolder + "\\" + filePath);
+            }
+
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -105,5 +119,10 @@ public class AudioViewFragment extends Fragment {
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    public void addElementToAudioList(String newRecord) {
+        audioList.add(newRecord);
+        adapter.notifyDataSetChanged();
     }
 }
