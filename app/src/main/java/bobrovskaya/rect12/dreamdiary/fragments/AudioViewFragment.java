@@ -18,10 +18,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import bobrovskaya.rect12.dreamdiary.activity.CreateDreamActivity;
 import bobrovskaya.rect12.dreamdiary.adapters.CustomAdapterAudioView;
 import bobrovskaya.rect12.dreamdiary.data.Dream;
 import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
+import lombok.Getter;
 
 
 public class AudioViewFragment extends Fragment {
@@ -73,10 +75,11 @@ public class AudioViewFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         final int position = adapter.getPosition();
 
+
         switch (item.getItemId()) {
             case CustomAdapterAudioView.IDM_DELETE:
 
-                AlertDialog.Builder builder = new AlertDialog.Builder();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle(R.string.delete_alert_dialog_title)
                         .setMessage(R.string.delete_alert_dialog_text)
                         .setCancelable(true)
@@ -97,6 +100,8 @@ public class AudioViewFragment extends Fragment {
                                 null);
                 AlertDialog alert = builder.create();
                 alert.show();
+                break;
+            default:
                 break;
         }
         return super.onContextItemSelected(item);

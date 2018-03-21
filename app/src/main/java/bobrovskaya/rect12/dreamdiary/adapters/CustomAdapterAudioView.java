@@ -22,8 +22,10 @@ import java.net.URI;
 import java.util.List;
 
 import bobrovskaya.rect12.dreamdiary.R;
+import bobrovskaya.rect12.dreamdiary.activity.CreateDreamActivity;
 import bobrovskaya.rect12.dreamdiary.data.Dream;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
+import bobrovskaya.rect12.dreamdiary.fragments.AudioViewFragment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +36,7 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
     private DreamDbHelper dreamDbHelper;
     MediaPlayer mPlayer;
     private @Getter @Setter int position;
+    private int flagForChanging;
 
 
     public static final int IDM_DELETE = 101;
@@ -81,38 +84,42 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
         // Get the data model based on position
         final String recordPath = mRecords.get(position);
 
+        flagForChanging = ((CreateDreamActivity)mContext).getFlagForChanging();
+
         // Set item views based on your views and data model
         TextView audioNameTextView = viewHolder.audioNameTextView;
-        audioNameTextView.setText("Record " + (position+1));
 
-        // появление кнопки "удалить" при долгом нажатии на запись
-        viewHolder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener(){
+        audioNameTextView.setText(recordPath.substring(recordPath.lastIndexOf("/") + 1));
 
-            @Override
-            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-                contextMenu.add(0, IDM_DELETE, 0, R.string.context_menu_delete_audio);
-            }
+        if (flagForChanging == 2) {
+            // появление кнопки "удалить" при долгом нажатии на запись
+            viewHolder.itemView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
 
-        });
-
-        // Проиграть запись при нажатии на кнопку проигрывания
-        viewHolder.playRecordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                File audioFile = new File(recordPath);
-                Uri myUri = Uri.fromFile(audioFile);
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                try {
-                    mediaPlayer.setDataSource(getContext(), myUri);
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                @Override
+                public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+                    contextMenu.add(0, IDM_DELETE, 0, R.string.context_menu_delete_audio);
                 }
+            });
 
-                mediaPlayer.start();
-            }
-        });
+            // Проиграть запись при нажатии на кнопку проигрывания
+            viewHolder.playRecordButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    File audioFile = new File(recordPath);
+                    Uri myUri = Uri.fromFile(audioFile);
+                    MediaPlayer mediaPlayer = new MediaPlayer();
+                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    try {
+                        mediaPlayer.setDataSource(getContext(), myUri);
+                        mediaPlayer.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    mediaPlayer.start();
+                }
+            });
+        }
 
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

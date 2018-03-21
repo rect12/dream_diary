@@ -36,6 +36,7 @@ import bobrovskaya.rect12.dreamdiary.data.Dream;
 import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 import bobrovskaya.rect12.dreamdiary.fragments.AudioViewFragment;
+import lombok.Getter;
 
 import android.Manifest;
 
@@ -55,7 +56,7 @@ public class CreateDreamActivity extends AppCompatActivity {
     AudioViewFragment audioViewFragment;
 
     private Dream curDream = null;
-    private int flagForChanging = -1;
+    private @Getter int flagForChanging = -1;
     FragmentTransaction fTrans;
 
     private String rootAppPath;
@@ -145,6 +146,8 @@ public class CreateDreamActivity extends AppCompatActivity {
             if (flagForChanging == 1) {
                 nameView.setEnabled(false);
                 descriptionView.setEnabled(false);
+
+
             }
         }
 
