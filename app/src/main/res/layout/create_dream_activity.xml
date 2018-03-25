@@ -36,6 +36,7 @@
             android:gravity="center"
             android:hint="Theme"
             android:inputType="text"
+            android:textColorHint="@color/spinner"
             android:textColorLink="@android:color/black" />
 
         <EditText
@@ -47,6 +48,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:hint="Description"
             android:inputType="textMultiLine"
+            android:textColorHint="@color/spinner"
             android:textColorLink="@android:color/black" />
 
         <LinearLayout
@@ -58,15 +60,17 @@
             <ImageButton
                 android:id="@+id/createDreamMicrophoneButtonStart"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:backgroundTint="@color/accent_dark"
                 app:srcCompat="@android:drawable/ic_btn_speak_now" />
 
             <ImageButton
                 android:id="@+id/createDreamMicrophoneButtonPause"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:backgroundTint="@color/accent_dark"
                 app:srcCompat="@android:drawable/ic_media_pause" />
 
         </LinearLayout>
