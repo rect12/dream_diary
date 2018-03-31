@@ -28,11 +28,6 @@ import bobrovskaya.rect12.dreamdiary.R;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String APP_PREFERENCES = "mysettings";
-    public static final String APP_PREFERENCES_THEME = "THEME";
-
-    SharedPreferences mSettings;
-
     FragmentTransaction fTrans;
     FloatingActionButton fab;
     Toolbar toolbar;
