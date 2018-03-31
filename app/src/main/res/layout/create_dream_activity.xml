@@ -65,14 +65,6 @@
                 android:backgroundTint="@color/accent_dark"
                 app:srcCompat="@android:drawable/ic_btn_speak_now" />
 
-            <ImageButton
-                android:id="@+id/createDreamMicrophoneButtonPause"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:backgroundTint="@color/accent_dark"
-                app:srcCompat="@android:drawable/ic_media_pause" />
-
         </LinearLayout>
 
 

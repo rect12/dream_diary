@@ -48,7 +48,6 @@ public class CreateDreamActivity extends AppCompatActivity {
 
     private MediaRecorder mediaRecorder;
     private ImageButton startButton;
-    private ImageButton pauseButton;
     private String filePath;
     private Boolean isRecording = false;
     private TextView nameView;
@@ -114,8 +113,6 @@ public class CreateDreamActivity extends AppCompatActivity {
         nameView = findViewById(R.id.createDreamNameText);
         descriptionView = findViewById(R.id.createDreamDreamText);
         startButton = findViewById(R.id.createDreamMicrophoneButtonStart);
-        pauseButton = findViewById(R.id.createDreamMicrophoneButtonPause);
-        pauseButton.setEnabled(false);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +152,7 @@ public class CreateDreamActivity extends AppCompatActivity {
             if (flagForChanging == 1) {
                 nameView.setEnabled(false);
                 descriptionView.setEnabled(false);
+                startButton.setEnabled(false);
             }
         }
 
@@ -251,7 +249,6 @@ public class CreateDreamActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         startButton.setImageResource(android.R.drawable.ic_notification_overlay);
-        pauseButton.setEnabled(true);
     }
 
     private void stopAudioRecording() {
@@ -263,7 +260,6 @@ public class CreateDreamActivity extends AppCompatActivity {
             dreamRecordsNumber++;
             Log.d("recorder", "stop recording, save file");
         }
-        pauseButton.setEnabled(false);
         startButton.setImageResource(android.R.drawable.ic_btn_speak_now);
     }
 
