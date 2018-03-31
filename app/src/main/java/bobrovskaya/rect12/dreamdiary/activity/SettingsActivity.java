@@ -45,14 +45,13 @@ public class SettingsActivity extends AppCompatActivity {
             int position = 0;
             switch (mSettings.getInt(ThemeChanger.APP_PREFERENCES_THEME, 0)) {
                 case R.style.AppThemeDark:
-                    position = 0;
+                    position = 1;
                     break;
                 case R.style.AppTheme:
-                    position = 1;
+                    position = 0;
                     break;
                 default:
             }
-
             spinner.setSelection(position);
         }
 
@@ -89,9 +88,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         editor.commit();
-        Toast toast = Toast.makeText(getApplicationContext(),
-                "Ваш выбор: " + choose[selectedItemPosition], Toast.LENGTH_SHORT);
-        toast.show();
         recreate();
 
         }

@@ -20,8 +20,8 @@
     <string name="alarm_question">Будьте внимательны, будильника не будет слышно в режиме без звука. По умолчанию стоят звуки волн.</string>
 
     <string-array name="themelist">
-        <item>darkTheme</item>
         <item>lightTheme</item>
+        <item>darkTheme</item>
     </string-array>
 
     <string-array name="alarmlist">
