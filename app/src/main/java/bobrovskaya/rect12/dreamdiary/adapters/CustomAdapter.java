@@ -139,6 +139,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     private void removeDreamFromDb(int id) {
+
         dreamDbHelper.deleteItemById(dreamDbHelper.getWritableDatabase(), id);
 
     }

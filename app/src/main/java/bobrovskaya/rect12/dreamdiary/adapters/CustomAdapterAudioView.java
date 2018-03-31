@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -99,12 +100,13 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
                 public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
                     contextMenu.add(0, IDM_DELETE, 0, R.string.context_menu_delete_audio);
                 }
-            });
+            });}
 
             // Проиграть запись при нажатии на кнопку проигрывания
             viewHolder.playRecordButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.d("PLAY_MUSIC", "i'm playing");
                     File audioFile = new File(recordPath);
                     Uri myUri = Uri.fromFile(audioFile);
                     MediaPlayer mediaPlayer = new MediaPlayer();
@@ -119,7 +121,7 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
                     mediaPlayer.start();
                 }
             });
-        }
+
 
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

@@ -61,6 +61,9 @@ public class DreamDbHelper extends SQLiteOpenHelper {
             new File(path).delete();
         }
 
+        File dirPath = new File(paths.get(0).substring(0, paths.lastIndexOf("\\")+1));
+        dirPath.delete();
+
         sqLiteDatabase.delete(DreamsTable.TABLE_NAME, "_ID = " + id, null);
 
     }
