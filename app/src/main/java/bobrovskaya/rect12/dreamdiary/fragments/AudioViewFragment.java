@@ -15,11 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import java.io.File;
 import java.util.ArrayList;
 
-import bobrovskaya.rect12.dreamdiary.activity.CreateDreamActivity;
 import bobrovskaya.rect12.dreamdiary.adapters.CustomAdapterAudioView;
 import bobrovskaya.rect12.dreamdiary.data.Dream;
 import bobrovskaya.rect12.dreamdiary.R;

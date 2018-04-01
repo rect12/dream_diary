@@ -43,8 +43,10 @@ public class AlarmFragment extends Fragment {
         alarm_off = (Button) view.findViewById(R.id.alarm_off);
         updateText = (TextView) view.findViewById(R.id.updateTimeText);
         timePicker = (TimePicker) view.findViewById(R.id.timePicker);
+
         this.mContext = getActivity();
         ((MainActivity)mContext).getFab().hide();
+
         alarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
 
 
