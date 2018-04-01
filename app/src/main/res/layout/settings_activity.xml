@@ -4,19 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     tools:context="bobrovskaya.rect12.dreamdiary.activity.SettingsActivity">
 
-    <include
-        android:id="@+id/include2"
-        layout="@layout/create_dream_toolbar"
-        android:layout_height="110dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="0dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="308dp"
-        android:layout_height="228dp"
+        android:layout_width="wrap_content"
+        android:layout_height="131dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -24,21 +20,22 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/include2"
-        app:layout_constraintVertical_bias="0.3">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.031">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="43dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="top|center_horizontal"
             android:text="Настройки" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
             android:orientation="horizontal">
 
             <TextView
@@ -69,7 +66,7 @@
 
 
         </LinearLayout>
-
+        <!--
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
@@ -82,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="57dp"
             android:layout_weight="1"
-            android:text="Установка пароля" />
+            android:text="Установка пароля" />-->
 
 
     </LinearLayout>
