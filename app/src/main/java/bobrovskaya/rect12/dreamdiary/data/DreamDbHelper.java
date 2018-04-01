@@ -37,7 +37,7 @@ public class DreamDbHelper extends SQLiteOpenHelper {
                 + DreamsTable.COLUMN_NAME + " TEXT NOT NULL, "
                 + DreamsTable.COLUMN_DESCRIPTION + " TEXT NOT NULL, "
                 + DreamsTable.COLUMN_AUDIO_PATH + " TEXT NOT NULL, "
-                + DreamsTable.COLUMN_DATE + " INTEGER NOT NULL DEFAULT 0);";
+                + DreamsTable.COLUMN_DATE + " TEXT NOT NULL DEFAULT 0);";
 
         // Запускаем создание таблицы
         sqLiteDatabase.execSQL(SQL_CREATE_GUESTS_TABLE);
@@ -61,8 +61,10 @@ public class DreamDbHelper extends SQLiteOpenHelper {
             new File(path).delete();
         }
 
-        File dirPath = new File(paths.get(0).substring(0, paths.lastIndexOf("\\")+1));
-        dirPath.delete();
+        if (paths.size() > 0) {
+            File dirPath = new File(paths.get(0).substring(0, paths.lastIndexOf("\\") + 1));
+            dirPath.delete();
+        }
 
         sqLiteDatabase.delete(DreamsTable.TABLE_NAME, "_ID = " + id, null);
 
