@@ -79,7 +79,6 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
         return viewHolder;
     }
 
-    //TODO переделать этот метод, остальные уже переделаны. Подумать над типом переменной mRecords.
     @Override
     public void onBindViewHolder(final CustomAdapterAudioView.ViewHolder viewHolder, final int position) {
         // Get the data model based on position
@@ -106,7 +105,7 @@ public class CustomAdapterAudioView extends RecyclerView.Adapter<CustomAdapterAu
             viewHolder.playRecordButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("PLAY_MUSIC", "i'm playing");
+                    Log.d("PLAY_MUSIC", "i'm playing " + recordPath);
                     File audioFile = new File(recordPath);
                     Uri myUri = Uri.fromFile(audioFile);
                     MediaPlayer mediaPlayer = new MediaPlayer();

@@ -15,6 +15,4 @@ public class Dream {
     private @Getter @Setter String description;
     private @Getter @Setter List<String> audioPaths;
 
-    private static int lastDreamtId = 0;
-
 }

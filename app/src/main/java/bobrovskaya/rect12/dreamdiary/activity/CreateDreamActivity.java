@@ -91,8 +91,6 @@ public class CreateDreamActivity extends AppCompatActivity {
         setContentView(R.layout.create_dream_activity);
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-//        Toolbar toolbar = findViewById(R.id.toolbar_create_dream);
-//        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -106,7 +104,6 @@ public class CreateDreamActivity extends AppCompatActivity {
         Bundle args = new Bundle();
         args.putString("dreamCacheFolder", dreamCacheFolder.getAbsolutePath());
 
-//        audioViewFragment = (AudioViewFragment) getFragmentManager().findFragmentById(R.id.audioListFragment);
         audioViewFragment = new AudioViewFragment();
         audioViewFragment.setArguments(args);
         nameView = findViewById(R.id.createDreamNameText);
@@ -117,11 +114,12 @@ public class CreateDreamActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isRecording) {
+                    audioViewFragment.addElementToAudioList(filePath);
                     stopAudioRecording();
-                    if (flagForChanging == 2) {
+//                    if (flagForChanging == 2) {
                         Log.d("record", "i'm here");
-                        audioViewFragment.addElementToAudioList(createFilePath());
-                    }
+
+//                    }
                     isRecording = false;
                 } else {
                     if (mediaRecorder == null) {
@@ -256,6 +254,7 @@ public class CreateDreamActivity extends AppCompatActivity {
             mediaRecorder.reset();
             mediaRecorder.release();
             mediaRecorder = null;
+            filePath = "";
             dreamRecordsNumber++;
             Log.d("recorder", "stop recording, save file");
         }
@@ -334,5 +333,4 @@ public class CreateDreamActivity extends AppCompatActivity {
         newFileName = newFileName + (maxInd + 1) + ".3gp";
         return newFileName;
     }
-
 }

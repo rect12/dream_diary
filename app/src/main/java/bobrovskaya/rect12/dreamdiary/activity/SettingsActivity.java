@@ -27,10 +27,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
-//        ActionBar actionBar = getSupportActionBar();
-//        actionBar.setHomeButtonEnabled(true);
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-
         spinner = findViewById(R.id.spinner);
 
         //адаптер
