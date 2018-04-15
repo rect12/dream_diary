@@ -66,7 +66,6 @@ public class CreateDreamActivity extends AppCompatActivity {
     private File dreamCacheFolder = null;
 
     private static final String CACHED_AUDIO = "cached_audio";
-    private List<String> cachedAudio = new ArrayList<>();
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
@@ -87,9 +86,8 @@ public class CreateDreamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeChanger.updateTheme(this);
-
+        Log.d("ARGS0", "onCreate");
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.create_dream_activity);
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
@@ -100,12 +98,14 @@ public class CreateDreamActivity extends AppCompatActivity {
         Intent intent = getIntent();
         cacheAppPath = getExternalCacheDir().getAbsolutePath();
         rootAppPath = getExternalFilesDir(DIRECTORY_MUSIC).getAbsolutePath();
+
         // задаем директорию в кэше, куда будут класться записи
         if (dreamCacheFolder == null)
             dreamCacheFolder = initUniqueDirectoryInCache(cacheAppPath);
 
         Bundle args = new Bundle();
         args.putString("dreamCacheFolder", dreamCacheFolder.getAbsolutePath());
+        Log.d("ARGS", dreamCacheFolder.getAbsolutePath());
 
         audioViewFragment = new AudioViewFragment();
         audioViewFragment.setArguments(args);
@@ -201,6 +201,7 @@ public class CreateDreamActivity extends AppCompatActivity {
                 newDream.setDate(curDream.getDate());
                 File newDir = initDirectoryInRoot(rootAppPath, curDream.getId());
                 List<String> newAudio = moveDirFromCacheToRoot(dreamCacheFolder, newDir);
+                Log.d("ARGS1", dreamCacheFolder.getAbsolutePath());
                 List<String> newAudioList = curDream.getAudioPaths();
                 newAudioList.addAll(newAudio);
                 newDream.setAudioPaths(newAudioList);
@@ -229,9 +230,16 @@ public class CreateDreamActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        String path = savedInstanceState.getString(CACHED_AUDIO);
-        if (path != null)
+        String path = savedInstanceState.getString(CACHED_AUDIO, null);
+        if (path != null) {
             dreamCacheFolder = new File(path);
+            int dreamId = curDream.getId();
+            if (audioViewFragment != null && dreamId > 0)
+                audioViewFragment.getAllRecords(dreamId, dreamCacheFolder.getAbsolutePath());
+
+        }
+        Log.d("ARGS", "onRestore");
+        Log.d("ARGS", audioViewFragment.getAudioList().toString());
     }
 
     private void createNewDream(SQLiteDatabase db, Dream newDream) {
@@ -287,6 +295,12 @@ public class CreateDreamActivity extends AppCompatActivity {
 
     private String createFilePath() {
         String newFilePath = dreamCacheFolder.getAbsolutePath() + "/newDreamRecord-" + dreamRecordsNumber + ".3gp";
+        File tmp = new File(newFilePath);
+        while(tmp.exists()){
+            dreamRecordsNumber++;
+            newFilePath = dreamCacheFolder.getAbsolutePath() + "/newDreamRecord-" + dreamRecordsNumber + ".3gp";
+            tmp = new File(newFilePath);
+        }
         Log.d("SET_FILE_PATH", newFilePath);
         return newFilePath;
     }

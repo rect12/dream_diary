@@ -60,22 +60,23 @@ public class AudioViewFragment extends Fragment {
         // регистрация контекстного меню для каждой cardView
         registerForContextMenu(recyclerView);
 
-        getAllRecords(dreamId);
+        getAllRecords(dreamId, dreamCacheFolderPath);
 
         return view;
     }
 
-    private void getAllRecords(int dreamId) {
+    public void getAllRecords(int dreamId, String dreamCacheFolderPath) {
         SQLiteDatabase db = dreamDbHelper.getReadableDatabase();
         Dream curDream = dreamDbHelper.getDreamById(db, dreamId);
 
+        audioList.clear();
         audioList.addAll(0, curDream.getAudioPaths());
         if (dreamCacheFolderPath != null) {
             Log.d("ADD_RECORD", "11");
             File dreamCacheFolder = new File(dreamCacheFolderPath);
             for(String filePath: dreamCacheFolder.list()) {
-                Log.d("ADD_RECORD", dreamCacheFolder + "\\" + filePath);
-                audioList.add(dreamCacheFolder + "\\" + filePath);
+                Log.d("ADD_RECORD", dreamCacheFolder + "\\ " + filePath);
+                audioList.add(dreamCacheFolder + "/" + filePath);
             }
 
         }
