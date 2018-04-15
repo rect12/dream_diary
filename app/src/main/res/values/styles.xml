@@ -11,6 +11,12 @@
         <item name="android:textColor">@color/accent_dark</item>
     </style>
 
+    <style name="ThemeAlertDialogDark" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/text_primary_dark</item>
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:windowBackground">@color/accent_light</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
@@ -38,6 +44,8 @@
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
         <item name="android:windowTitleStyle">@color/text_primary_dark</item>
         <item name="android:buttonStyle">@style/ThemeButtonLight</item>
+
+        <item name="android:alertDialogTheme">@style/ThemeAlertDialogDark</item>
     </style>
 
     <style name="AppThemeDark.NoActionBar" parent="AppTheme">

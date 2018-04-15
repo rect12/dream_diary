@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,12 +102,12 @@ public class DreamListFragment extends Fragment {
                 // Используем индекс для получения строки или числа
                 int currentID = cursor.getInt(idColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
-                long currentDate = cursor.getLong(dateColumnIndex);
-                time = new Date(currentDate);
+                String currentDate = cursor.getString(dateColumnIndex);
+                //time = new Date(currentDate);
                 String currentDescription = cursor.getString(descriptionColumnIndex);
                 ArrayList<String> audioPaths = getListFromJson(cursor.getString(audioPathColumnIndex));
                 // Добавляем значения каждого столбца
-                dreamList.add(new Dream(currentID, currentName, time.toString(), currentDescription, audioPaths));
+                dreamList.add(new Dream(currentID, currentName, currentDate, currentDescription, audioPaths));
             }
         } finally {
             // Закрываем курсор после чтения

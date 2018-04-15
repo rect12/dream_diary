@@ -22,6 +22,7 @@ import static android.content.Context.ALARM_SERVICE;
 
 import bobrovskaya.rect12.dreamdiary.AlarmReceiver;
 import bobrovskaya.rect12.dreamdiary.R;
+import bobrovskaya.rect12.dreamdiary.activity.MainActivity;
 
 public class AlarmFragment extends Fragment {
 
@@ -42,7 +43,10 @@ public class AlarmFragment extends Fragment {
         alarm_off = (Button) view.findViewById(R.id.alarm_off);
         updateText = (TextView) view.findViewById(R.id.updateTimeText);
         timePicker = (TimePicker) view.findViewById(R.id.timePicker);
+
         this.mContext = getActivity();
+        ((MainActivity)mContext).getFab().hide();
+
         alarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
 
 
@@ -98,4 +102,6 @@ public class AlarmFragment extends Fragment {
     public void setTimeText(String timeText) {
         this.updateText.setText(timeText);
     }
+
 }
+

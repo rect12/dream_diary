@@ -8,10 +8,10 @@
 
     <color name="primary_dark">#000</color>
     <color name="primary_dark_dark">#333</color>
-    <color name="accent_dark">#000</color>
+    <color name="accent_dark">#000000</color>
     <color name="window_background_dark">#333</color>
     <color name="text_primary_dark">#fff</color>
 
     <color name="card">#280000ff</color>
-    <color name="spinner">#ccc</color>
+    <color name="spinner">#cccccc</color>
 </resources>

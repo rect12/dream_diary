@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.nio.file.Files;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,10 +31,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import bobrovskaya.rect12.dreamdiary.ThemeChanger;
+import bobrovskaya.rect12.dreamdiary.adapters.CustomAdapter;
+import bobrovskaya.rect12.dreamdiary.adapters.CustomAdapterAudioView;
 import bobrovskaya.rect12.dreamdiary.data.Dream;
 import bobrovskaya.rect12.dreamdiary.R;
 import bobrovskaya.rect12.dreamdiary.data.DreamDbHelper;
 import bobrovskaya.rect12.dreamdiary.fragments.AudioViewFragment;
+import lombok.Getter;
 
 import android.Manifest;
 
@@ -44,7 +48,6 @@ public class CreateDreamActivity extends AppCompatActivity {
 
     private MediaRecorder mediaRecorder;
     private ImageButton startButton;
-    private ImageButton pauseButton;
     private String filePath;
     private Boolean isRecording = false;
     private TextView nameView;
@@ -52,8 +55,9 @@ public class CreateDreamActivity extends AppCompatActivity {
 
     AudioViewFragment audioViewFragment;
 
+
     private Dream curDream = null;
-    private int flagForChanging = -1;
+    private @Getter int flagForChanging = -1;
     FragmentTransaction fTrans;
 
     private String rootAppPath;
@@ -61,11 +65,12 @@ public class CreateDreamActivity extends AppCompatActivity {
     private int dreamRecordsNumber = 0;
     private File dreamCacheFolder = null;
 
+    private static final String CACHED_AUDIO = "cached_audio";
+    private static final String IS_RECORDING = "recording";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
 
-    public static final String APP_PREFERENCES_THEME = "THEME";
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -82,14 +87,11 @@ public class CreateDreamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeChanger.updateTheme(this);
-
+        Log.d("ARGS0", "onCreate");
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.create_dream_activity);
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-//        Toolbar toolbar = findViewById(R.id.toolbar_create_dream);
-//        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -98,22 +100,28 @@ public class CreateDreamActivity extends AppCompatActivity {
         cacheAppPath = getExternalCacheDir().getAbsolutePath();
         rootAppPath = getExternalFilesDir(DIRECTORY_MUSIC).getAbsolutePath();
 
-//        audioViewFragment = (AudioViewFragment) getFragmentManager().findFragmentById(R.id.audioListFragment);
+        // задаем директорию в кэше, куда будут класться записи
+        if (dreamCacheFolder == null)
+            dreamCacheFolder = initUniqueDirectoryInCache(cacheAppPath);
+
+        Bundle args = new Bundle();
+        args.putString("dreamCacheFolder", dreamCacheFolder.getAbsolutePath());
+        Log.d("ARGS", dreamCacheFolder.getAbsolutePath());
+
         audioViewFragment = new AudioViewFragment();
+        audioViewFragment.setArguments(args);
         nameView = findViewById(R.id.createDreamNameText);
         descriptionView = findViewById(R.id.createDreamDreamText);
         startButton = findViewById(R.id.createDreamMicrophoneButtonStart);
-        pauseButton = findViewById(R.id.createDreamMicrophoneButtonPause);
-        pauseButton.setEnabled(false);
-
-        // задаем директорию в кэше, куда будут класться записи
-        dreamCacheFolder = initUniqueDirectoryInCache(cacheAppPath);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isRecording) {
+                    if (flagForChanging == 2)
+                        audioViewFragment.addElementToAudioList(filePath);
                     stopAudioRecording();
+                    Log.d("record", "i'm here");
                     isRecording = false;
                 } else {
                     if (mediaRecorder == null) {
@@ -143,6 +151,7 @@ public class CreateDreamActivity extends AppCompatActivity {
             if (flagForChanging == 1) {
                 nameView.setEnabled(false);
                 descriptionView.setEnabled(false);
+                startButton.setEnabled(false);
             }
         }
 
@@ -153,7 +162,6 @@ public class CreateDreamActivity extends AppCompatActivity {
             fTrans = getFragmentManager().beginTransaction();
             fTrans.add(R.id.audioListFragment, audioViewFragment).commit();
         }
-
     }
 
     @Override
@@ -190,7 +198,15 @@ public class CreateDreamActivity extends AppCompatActivity {
                 createNewDream(db, newDream);
 
             } else {
+                curDream = mDbHelper.getDreamById(db, curDream.getId());
                 newDream.setDate(curDream.getDate());
+                File newDir = initDirectoryInRoot(rootAppPath, curDream.getId());
+                List<String> newAudio = moveDirFromCacheToRoot(dreamCacheFolder, newDir);
+                Log.d("ARGS1", dreamCacheFolder.getAbsolutePath());
+                List<String> newAudioList = curDream.getAudioPaths();
+                newAudioList.addAll(newAudio);
+                newDream.setAudioPaths(newAudioList);
+
                 int numUpdatedRows = mDbHelper.changeItemById(db, curDream.getId(), newDream);
                 if (numUpdatedRows > 0) {
                     Toast.makeText(this, "Dream succesfully updated", Toast.LENGTH_SHORT).show();
@@ -203,6 +219,33 @@ public class CreateDreamActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (dreamCacheFolder != null)
+            outState.putString(CACHED_AUDIO, dreamCacheFolder.getAbsolutePath());
+        outState.putBoolean(IS_RECORDING, isRecording);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String path = savedInstanceState.getString(CACHED_AUDIO, null);
+        if (path != null) {
+            dreamCacheFolder = new File(path);
+            if (curDream != null) {
+                int dreamId = curDream.getId();
+                if (audioViewFragment != null && dreamId > 0)
+                    audioViewFragment.getAllRecords(dreamId, dreamCacheFolder.getAbsolutePath());
+            }
+
+        }
+//        isRecording = savedInstanceState.getBoolean(IS_RECORDING, false);
+//        if (isRecording){
+//            Log.d("record", "recording");
+//        }
     }
 
     private void createNewDream(SQLiteDatabase db, Dream newDream) {
@@ -234,7 +277,6 @@ public class CreateDreamActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         startButton.setImageResource(android.R.drawable.ic_notification_overlay);
-        pauseButton.setEnabled(true);
     }
 
     private void stopAudioRecording() {
@@ -243,10 +285,10 @@ public class CreateDreamActivity extends AppCompatActivity {
             mediaRecorder.reset();
             mediaRecorder.release();
             mediaRecorder = null;
+            filePath = "";
             dreamRecordsNumber++;
             Log.d("recorder", "stop recording, save file");
         }
-        pauseButton.setEnabled(false);
         startButton.setImageResource(android.R.drawable.ic_btn_speak_now);
     }
 
@@ -257,8 +299,24 @@ public class CreateDreamActivity extends AppCompatActivity {
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
     }
 
+    @Override
+    protected void onDestroy() {
+        if (isRecording) {
+            stopAudioRecording();
+            Log.d("record", "Destroy");
+            isRecording = false;
+        }
+        super.onDestroy();
+    }
+
     private String createFilePath() {
-        String newFilePath = dreamCacheFolder.getAbsolutePath() + "/dreamRecord-" + dreamRecordsNumber + ".3gp";
+        String newFilePath = dreamCacheFolder.getAbsolutePath() + "/newDreamRecord-" + dreamRecordsNumber + ".3gp";
+        File tmp = new File(newFilePath);
+        while(tmp.exists()){
+            dreamRecordsNumber++;
+            newFilePath = dreamCacheFolder.getAbsolutePath() + "/newDreamRecord-" + dreamRecordsNumber + ".3gp";
+            tmp = new File(newFilePath);
+        }
         Log.d("SET_FILE_PATH", newFilePath);
         return newFilePath;
     }
@@ -280,7 +338,8 @@ public class CreateDreamActivity extends AppCompatActivity {
 
     public File initDirectoryInRoot(String rootDirPath, long dreamId) {
         File file = new File(rootDirPath, Long.toString(dreamId));
-        file.mkdirs();
+        if (!file.isDirectory())
+            file.mkdirs();
         return file;
     }
 
@@ -292,7 +351,8 @@ public class CreateDreamActivity extends AppCompatActivity {
         }
 
         for (String file : oldDir.list()) {
-            File newFile = new File(newDir, file);
+            String newFileName = generateNewFileName(newDir);
+            File newFile = new File(newDir, newFileName);
             File oldFile = new File(oldDir, file);
             oldFile.renameTo(newFile);
             newAudioPaths.add(newFile.getAbsolutePath());
@@ -302,5 +362,22 @@ public class CreateDreamActivity extends AppCompatActivity {
         return newAudioPaths;
     }
 
+    String generateNewFileName(File newDir) {
+        String newFileName = "dreamRecord-";
+        int newFileNameLength = newFileName.length();
 
+        int maxInd = -1;
+        int ind = -1;
+        for(String file: newDir.list()) {
+            Log.d("record_ind", file.substring(0, newFileNameLength) + "   " + file.substring(newFileNameLength, file.lastIndexOf(".")));
+            if (file.substring(0, newFileNameLength).equals(newFileName)) {
+                ind = Integer.parseInt(file.substring(newFileNameLength, file.lastIndexOf(".")));
+                Log.d("record_ind", "" + ind);
+                if (ind > maxInd) maxInd = ind;
+            }
+        }
+
+        newFileName = newFileName + (maxInd + 1) + ".3gp";
+        return newFileName;
+    }
 }

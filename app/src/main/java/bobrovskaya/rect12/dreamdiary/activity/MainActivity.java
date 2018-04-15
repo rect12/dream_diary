@@ -24,29 +24,22 @@ import bobrovskaya.rect12.dreamdiary.ThemeChanger;
 import bobrovskaya.rect12.dreamdiary.fragments.AlarmFragment;
 import bobrovskaya.rect12.dreamdiary.fragments.DreamListFragment;
 import bobrovskaya.rect12.dreamdiary.R;
+import lombok.Getter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String APP_PREFERENCES = "mysettings";
-    public static final String APP_PREFERENCES_THEME = "THEME";
-
-    SharedPreferences mSettings;
-
     FragmentTransaction fTrans;
-    FloatingActionButton fab;
+    @Getter FloatingActionButton fab;
     Toolbar toolbar;
-//    private DreamDbHelper dreamDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeChanger.updateTheme(this);
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-//        toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
+        fab = findViewById(R.id.fab);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -75,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -87,9 +80,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
-            return true;
-        }
+//        if (id == R.id.action_search) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -112,7 +105,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_my_dreams) {
             fragmentClass = DreamListFragment.class;
-            fab = findViewById(R.id.fab);
             fab.show();
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -123,11 +115,14 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-        } else if (id == R.id.nav_search) {
+        }
+        //
+        /*else if (id == R.id.nav_search) {
             fab = findViewById(R.id.fab);
             fab.hide();
 
-        } else if (id == R.id.nav_manage) {
+        }*/
+        else if (id == R.id.nav_manage) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
             finish();
@@ -144,7 +139,6 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        //TODO удалить это условие (оно временно, чтобы приложение на падало)
         if (fragment != null) {
             fTrans = getFragmentManager().beginTransaction();
             fTrans.replace(R.id.frgmCont, fragment).commit();
