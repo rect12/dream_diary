@@ -66,6 +66,7 @@ public class CreateDreamActivity extends AppCompatActivity {
     private File dreamCacheFolder = null;
 
     private static final String CACHED_AUDIO = "cached_audio";
+    private static final String IS_RECORDING = "recording";
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
@@ -225,6 +226,7 @@ public class CreateDreamActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         if (dreamCacheFolder != null)
             outState.putString(CACHED_AUDIO, dreamCacheFolder.getAbsolutePath());
+        outState.putBoolean(IS_RECORDING, isRecording);
     }
 
     @Override
@@ -233,13 +235,17 @@ public class CreateDreamActivity extends AppCompatActivity {
         String path = savedInstanceState.getString(CACHED_AUDIO, null);
         if (path != null) {
             dreamCacheFolder = new File(path);
-            int dreamId = curDream.getId();
-            if (audioViewFragment != null && dreamId > 0)
-                audioViewFragment.getAllRecords(dreamId, dreamCacheFolder.getAbsolutePath());
+            if (curDream != null) {
+                int dreamId = curDream.getId();
+                if (audioViewFragment != null && dreamId > 0)
+                    audioViewFragment.getAllRecords(dreamId, dreamCacheFolder.getAbsolutePath());
+            }
 
         }
-        Log.d("ARGS", "onRestore");
-        Log.d("ARGS", audioViewFragment.getAudioList().toString());
+//        isRecording = savedInstanceState.getBoolean(IS_RECORDING, false);
+//        if (isRecording){
+//            Log.d("record", "recording");
+//        }
     }
 
     private void createNewDream(SQLiteDatabase db, Dream newDream) {
@@ -291,6 +297,16 @@ public class CreateDreamActivity extends AppCompatActivity {
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (isRecording) {
+            stopAudioRecording();
+            Log.d("record", "Destroy");
+            isRecording = false;
+        }
+        super.onDestroy();
     }
 
     private String createFilePath() {
