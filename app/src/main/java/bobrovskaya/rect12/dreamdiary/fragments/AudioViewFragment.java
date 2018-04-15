@@ -27,7 +27,7 @@ import lombok.Getter;
 
 public class AudioViewFragment extends Fragment {
     private DreamDbHelper dreamDbHelper;
-    private ArrayList<String> audioList;
+    private @Getter ArrayList<String> audioList;
     private @Getter CustomAdapterAudioView adapter;
     private RecyclerView recyclerView;
     private int dreamId;
